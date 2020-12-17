@@ -3,10 +3,15 @@ const express = require("express");
 
 const app = express();
 
+const applicationRouter = require("./routes/applications");
+
 const PORT = 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Route Handlers
+app.use("/application", applicationRouter);
 
 //Default Error Handler
 app.use((err, req, res, next) => {
