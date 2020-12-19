@@ -6,11 +6,11 @@ usersController.getUserData = (req, res, next) => {
   const UID = req.params.user_id;
 
   // get user's personal data
-  const getUserData = 'SELECT first_name FROM job_seekers WHERE id = $1';
+  const getUserData = 'SELECT * FROM job_seekers WHERE id = $1';
 
   db.query(getUserData, [UID]) // array of variables to use in query
     .then((data) => {
-      res.locals.userData = data;
+      res.locals.userData = data.rows[0];
       return next();
     })
     .catch((err) => {
@@ -24,30 +24,15 @@ usersController.getUserData = (req, res, next) => {
 };
 
 usersController.addUser = (req, res, next) => {
-  const {
-    id,
-    first_name,
-    last_name,
-    email,
-    password,
-    cur_salary,
-    DOB,
-  } = req.body;
+  const { first_name, last_name, email, password, cur_salary, DOB } = req.body;
   const addUser =
-    'INSERT INTO job_seekers (id , first_name, last_name, email, password, cur_salary, DOB) VALUES ($1, $2, $3, $4, $5, $6, $7)';
+    'INSERT INTO job_seekers (first_name, last_name, email, password, cur_salary, DOB) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
 
-  db.query(addUser, [
-    id,
-    first_name,
-    last_name,
-    email,
-    password,
-    cur_salary,
-    DOB,
-  ])
+  db.query(addUser, [first_name, last_name, email, password, cur_salary, DOB])
     .then((data) => {
       // return something?
       console.log('data from addUser:', data);
+      res.locals.userId = data.rows[0].id;
       return next();
     })
     .catch((err) => {

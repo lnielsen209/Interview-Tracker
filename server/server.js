@@ -3,8 +3,9 @@ const express = require('express');
 
 const app = express();
 
-const applicationRouter = require('./routes/applications');
+// const applicationRouter = require('./routes/applications');
 const userRouter = require('./routes/users');
+const usersController = require('./controllers/usersController');
 
 const PORT = 3000;
 
@@ -12,8 +13,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Route Handlers
-app.use('/:user_id/application', applicationRouter);
+// login & signup
 app.use('/user', userRouter);
+
+// app.post('/signup', usersController.createUser, (req, res) => {
+
+// })
+// to display dashboard w/ brief app details
+// app.use('/application', applicationRouter);
 
 // app.use('/:user_id/application', (req, res) => {
 //   console.log('request query', req.query, req.params);

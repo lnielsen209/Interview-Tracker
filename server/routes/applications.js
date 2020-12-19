@@ -1,14 +1,14 @@
 const express = require('express');
 const applicationsController = require('../controllers/applicationsController');
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 const stepRouter = require('../routes/steps');
 
 // get all applications for this user_id
-router.get('/', applicationsController.getAllApps, (req, res) =>
-  res.status(200).json({ hi: 'there' })
-);
+router.get('/', applicationsController.getAllApps, (req, res) => {
+  res.status(200).json({ hi: 'there' });
+});
 
 // add new app
 router.post('/', applicationsController.addApp, (req, res) => {
