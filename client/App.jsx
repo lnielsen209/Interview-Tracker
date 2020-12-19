@@ -10,7 +10,6 @@ const App = () => {
   return (
     <div className="wrapper">
       <h1>Application</h1>
-
       <Switch>
         <Route path="/dashboard">
           <Dashboard />
