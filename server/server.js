@@ -8,6 +8,10 @@ const PORT = 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//components
+app.use("/login", (req, res) => {});
+app.use("/signup", (req, res) => {});
+
 //Default Error Handler
 app.use((err, req, res, next) => {
   const defaultErr = {
