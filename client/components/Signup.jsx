@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Signup = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
   const [date, setDate] = useState(new Date());
   const [salary, setSalary] = useState(0);
 
@@ -14,12 +15,12 @@ const Signup = () => {
 
     // check if passwords match before submit
     if (password !== password2) {
-      alert("password does not match");
+      alert('password does not match');
     } else {
-      fetch("/signup", {
-        method: "POST",
+      fetch('/user/signup', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           first_name: firstName,
@@ -106,7 +107,7 @@ const Signup = () => {
             <input type="submit" value="Create an account" />
           </li>
           <li id="create_page">
-            <a href="/dashboard">Create a Page</a>
+            <Link to="/dashboard">GOTO DASHBOARD</Link>
           </li>
         </form>
       </div>
