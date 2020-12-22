@@ -31,7 +31,7 @@ module.exports = {
     ],
   },
   devServer: {
-    // historyApiFallback: true,
+    historyApiFallback: true,
     publicPath: '/build',
     proxy: {
       '/user': {

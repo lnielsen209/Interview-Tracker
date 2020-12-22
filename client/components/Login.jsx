@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './Style/Style.css';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
+  // const history = useHistory();
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    // history.push('/asdfasdf');
 
     fetch('/user/login', {
       method: 'POST',
@@ -18,6 +21,9 @@ const Login = () => {
       body: JSON.stringify({ username, password }),
     }).then((resp) => {
       console.log(resp.status === 200 ? 'logged in' : 'NOT logged in');
+      if (resp.status === 200) {
+        this.props.history.push('/dashboard');
+      }
     });
   };
 
