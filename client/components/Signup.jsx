@@ -1,13 +1,14 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Signup = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [first_name, setFirstName] = useState("");
+  const [last_name, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
-  const [date, setDate] = useState(new Date());
-  const [salary, setSalary] = useState(0);
+  const [dob, setDOB] = useState(new Date());
+  const [cur_salary, setSalary] = useState(0);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,18 +17,18 @@ const Signup = () => {
     if (password !== password2) {
       alert("password does not match");
     } else {
-      fetch("/signup", {
+      fetch("/user/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          first_name: firstName,
-          last_name: lastName,
+          first_name,
+          last_name,
           email,
           password,
-          cur_salary: salary,
-          DOB: date,
+          cur_salary,
+          dob,
         }),
       }).then((data) => data.json());
     }
@@ -44,15 +45,17 @@ const Signup = () => {
               type="text"
               placeholder="First Name"
               id="firstname"
-              value={firstName}
+              value={first_name}
               onChange={(e) => setFirstName(e.target.value)}
               required
             />
+          </li>
+          <li>
             <input
               type="text"
               placeholder="Last Name"
               id="lastname"
-              value={lastName}
+              value={last_name}
               onChange={(e) => setLastName(e.target.value)}
               required
             />
@@ -88,8 +91,8 @@ const Signup = () => {
             Enter Date of Birth
             <input
               type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
+              value={dob}
+              onChange={(e) => setDOB(e.target.value)}
             />
           </li>
 
@@ -98,15 +101,12 @@ const Signup = () => {
             <input
               type="number"
               placeholder="Salary"
-              value={salary}
+              value={cur_salary}
               onChange={(e) => setSalary(e.target.value)}
             />
           </li>
           <li>
             <input type="submit" value="Create an account" />
-          </li>
-          <li id="create_page">
-            <a href="/dashboard">Create a Page</a>
           </li>
         </form>
       </div>

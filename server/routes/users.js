@@ -1,11 +1,33 @@
-const express = require("express");
-const usersController = require("../controllers/usersController.js");
-const applicationRouter = require("../routes/applications");
+const express = require('express');
+
+const userController = require('../controllers/userController.js');
+const sessionController = require('../controllers/sessionController');
+
+const applicationRouter = require('../routes/applications');
 
 const router = express.Router();
 
+// Route to create a new user
+router.post(
+  '/signup',
+  userController.createUser,
+  sessionController.startSession,
+  (req, res) => {
+    res.status(200).json({ you: 'signedup' });
+  }
+);
+
+router.post(
+  '/login',
+  userController.verifyUser,
+  sessionController.startSession,
+  (req, res) => {
+    res.status(200).json({ you: 'logged in' });
+  }
+);
+
 // get user data at login
-router.get("/:user_id", usersController.getUserData, (req, res) => {
+router.get('/:user_id', userController.getUserData, (req, res) => {
   res.status(200).json(res.locals.userData);
 });
 
@@ -24,6 +46,6 @@ router.get("/:user_id", usersController.getUserData, (req, res) => {
 //   res.status(200).json({});
 // });
 
-router.use("/:user_id/application", applicationRouter);
+router.use('/:user_id/application', applicationRouter);
 
 module.exports = router;
