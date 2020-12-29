@@ -27,7 +27,7 @@ userController.getUserData = (req, res, next) => {
 userController.createUser = async (req, res, next) => {
   try {
     const {
-      first_name,
+      first_name, 
       last_name,
       email,
       password,
