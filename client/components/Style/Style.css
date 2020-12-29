@@ -1,3 +1,12 @@
+body {
+  text-align: center;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0px;
+  font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+  background: linear-gradient(white, #d3d8e8);
+}
+
 .wrapper {
   padding: 20px;
 }
@@ -23,4 +32,53 @@
   list-style-type: none;
   display: flex;
   align-items: center;
+}
+
+/* application table*/
+
+#title {
+  text-align: center;
+}
+
+#tracker {
+  border-collapse: collapse;
+  border: 3px solid #ddd;
+}
+
+#tracker td,
+#tracker th {
+  border: 1px solid #ddd;
+  padding: 12px;
+}
+
+#tracker tr:hover {
+  background-color: #ddd;
+}
+
+#tracker th {
+  padding: 10px;
+  text-align: center;
+  background-color: #4caf50;
+  color: white;
+}
+
+.opration {
+  text-align: center;
+}
+
+.button {
+  border: none;
+  outline: none;
+  font-size: 11px;
+  font-family: "Quicksand", sans-serif;
+  color: #f44336;
+  padding: 3px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid #f44336;
+  background-color: transparent;
+}
+
+.button:active {
+  border: 1px solid blue;
 }

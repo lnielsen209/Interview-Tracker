@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Signup = () => {
-  const [first_name, setFirstName] = useState('');
-  const [last_name, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [password2, setPassword2] = useState('');
+  const [first_name, setFirstName] = useState("");
+  const [last_name, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
   const [dob, setDOB] = useState(new Date());
   const [cur_salary, setSalary] = useState(0);
 
@@ -15,12 +15,12 @@ const Signup = () => {
 
     // check if passwords match before submit
     if (password !== password2) {
-      alert('password does not match');
+      alert("password does not match");
     } else {
-      fetch('/user/signup', {
-        method: 'POST',
+      fetch("/user/signup", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           first_name,
@@ -49,6 +49,8 @@ const Signup = () => {
               onChange={(e) => setFirstName(e.target.value)}
               required
             />
+          </li>
+          <li>
             <input
               type="text"
               placeholder="Last Name"
@@ -105,9 +107,6 @@ const Signup = () => {
           </li>
           <li>
             <input type="submit" value="Create an account" />
-          </li>
-          <li id="create_page">
-            <Link to="/dashboard">GOTO DASHBOARD</Link>
           </li>
         </form>
       </div>
