@@ -1,8 +1,8 @@
 const db = require('../models/model.js');
 
-const applicationsController = {};
+const applicationController = {};
 
-applicationsController.getAllApps = (req, res, next) => {
+applicationController.getAllApps = (req, res, next) => {
   const UID = req.params.user_id;
   // get user's personal data
   const getAppData = 'SELECT * FROM applications WHERE job_seeker_id = $1';
@@ -24,7 +24,7 @@ applicationsController.getAllApps = (req, res, next) => {
     });
 };
 
-applicationsController.addApp = (req, res, next) => {
+applicationController.addApp = (req, res, next) => {
   const UID = req.params.user_id;
 
   const {
@@ -77,8 +77,8 @@ applicationsController.addApp = (req, res, next) => {
 // "found_by" varchar(255) NOT NULL,
 // "notes" varchar(255),
 // "app_status" integer NOT NULL,
-applicationsController.deleteApp = () => {};
+applicationController.deleteApp = () => {};
 
-applicationsController.editApp = () => {};
+applicationController.editApp = () => {};
 
-module.exports = applicationsController;
+module.exports = applicationController;

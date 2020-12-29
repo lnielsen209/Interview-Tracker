@@ -1,22 +1,30 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import "./Style/Style.css";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import './Style/Style.css';
+import { Link, useHistory } from 'react-router-dom';
 
-export default function Login() {
-  const [username, setUserName] = useState("");
-  const [password, setPassword] = useState("");
+const Login = () => {
+  const [username, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+
+  // const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // history.push('/asdfasdf');
 
-    fetch("/login", {
-      method: "GET",
+    fetch('/user/login', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
-      // body: JSON.stringify(credentials),
-    }).then((data) => data.json());
+      body: JSON.stringify({ username, password }),
+    }).then((resp) => {
+      console.log(resp.status === 200 ? 'logged in' : 'NOT logged in');
+      if (resp.status === 200) {
+        this.props.history.push('/dashboard');
+      }
+    });
   };
 
   return (
@@ -59,4 +67,6 @@ export default function Login() {
       </div>
     </div>
   );
-}
+};
+
+export default Login;
