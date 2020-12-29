@@ -6,6 +6,9 @@ import Login from '../client/components/Login';
 import useToken from './useToken';
 import { Route, Switch, Link, BrowserRouter } from 'react-router-dom';
 
+// const UserContext = React.createContext();
+
+
 const App = () => {
   return (
     <BrowserRouter>

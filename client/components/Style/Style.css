@@ -3,7 +3,7 @@ body {
   width: 100%;
   margin: 0 auto;
   padding: 0px;
-  font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+  font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;
   background: linear-gradient(white, #d3d8e8);
 }
 
@@ -70,7 +70,7 @@ body {
   border: none;
   outline: none;
   font-size: 11px;
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Quicksand', sans-serif;
   color: #f44336;
   padding: 3px 10px;
   border-radius: 8px;
@@ -81,4 +81,24 @@ body {
 
 .button:active {
   border: 1px solid blue;
+}
+
+.modalForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.modalForm input {
+  margin: 5px;
+  padding: 3px;
+}
+
+.modalWrapper {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.modalButtonWrapper {
+  padding: 15px;
+  display: flex;
 }
