@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import './Style/Style.css';
 import { Link, useHistory } from 'react-router-dom';
 
+
 const Login = () => {
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -22,6 +23,7 @@ const Login = () => {
     }).then((resp) => {
       console.log(resp.status === 200 ? 'logged in' : 'NOT logged in');
       if (resp.status === 200) {
+        // put the user id into the context
         this.props.history.push('/dashboard');
       }
     });
