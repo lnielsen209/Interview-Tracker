@@ -1,11 +1,11 @@
-const db = require('../models/model.js');
+const db = require("../models/model.js");
 
 const applicationController = {};
 
 applicationController.getAllApps = (req, res, next) => {
   const UID = req.params.user_id;
   // get user's personal data
-  const getAppData = 'SELECT * FROM applications WHERE job_seeker_id = $1';
+  const getAppData = "SELECT * FROM applications WHERE job_seeker_id = $1";
   db.query(getAppData, [UID]) // array of variables to use in query
     .then((data) => {
       res.locals.userData = data.rows;
@@ -15,10 +15,10 @@ applicationController.getAllApps = (req, res, next) => {
     .catch((err) => {
       return next({
         log:
-          'applicationsController.getUserData: ERROR: Error getting database',
+          "applicationsController.getUserData: ERROR: Error getting database",
         message: {
           err:
-            'applicationsController.getUserData: ERROR: Check database for details',
+            "applicationsController.getUserData: ERROR: Check database for details",
         },
       });
     });
@@ -39,7 +39,7 @@ applicationController.addApp = (req, res, next) => {
   } = req.body;
 
   const addApp =
-    'INSERT INTO applications (job_seeker_id, company, job_title, how_applied, date_applied, location, found_by, notes, app_status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *';
+    "INSERT INTO applications (job_seeker_id, company, job_title, how_applied, date_applied, location, found_by, notes, app_status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *";
 
   db.query(addApp, [
     UID,
@@ -58,10 +58,10 @@ applicationController.addApp = (req, res, next) => {
     })
     .catch((err) => {
       return next({
-        log: 'applicationsController.addApp: ERROR: Error writing to database',
+        log: "applicationsController.addApp: ERROR: Error writing to database",
         message: {
           err:
-            'applicationsController.addApp: ERROR: Check database for details',
+            "applicationsController.addApp: ERROR: Check database for details",
         },
       });
     });

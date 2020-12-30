@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 
 const Signup = () => {
+  let history = useHistory();
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -30,7 +31,12 @@ const Signup = () => {
           cur_salary,
           dob,
         }),
-      }).then((data) => data.json());
+      }).then((resp) => {
+        console.log(resp.status === 200 ? "logged in" : "NOT logged in");
+        if (resp.status === 200) {
+          history.push("/dashboard");
+        }
+      });
     }
   };
 
@@ -39,11 +45,11 @@ const Signup = () => {
       <div id="div2">
         <form onSubmit={handleSubmit} id="list">
           <h1>Create an account</h1>
-
           <li>
+            First name:
             <input
               type="text"
-              placeholder="First Name"
+              placeholder="  Ex: John"
               id="firstname"
               value={first_name}
               onChange={(e) => setFirstName(e.target.value)}
@@ -51,9 +57,10 @@ const Signup = () => {
             />
           </li>
           <li>
+            Last Name:
             <input
               type="text"
-              placeholder="Last Name"
+              placeholder=" Ex: Doe"
               id="lastname"
               value={last_name}
               onChange={(e) => setLastName(e.target.value)}
@@ -61,27 +68,30 @@ const Signup = () => {
             />
           </li>
           <li>
+            Email address:
             <input
               type="email"
-              placeholder="Email address"
+              placeholder=" Ex: johnDoe@gmail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
           </li>
           <li>
+            Enter Password:
             <input
               type="password"
-              placeholder="Enter Password"
+              placeholder=" Six characters"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </li>
           <li>
+            Re-Enter password:
             <input
               type="password"
-              placeholder="Re-Enter password"
+              placeholder=" Same password"
               value={password2}
               onChange={(e) => setPassword2(e.target.value)}
               required
@@ -95,7 +105,6 @@ const Signup = () => {
               onChange={(e) => setDOB(e.target.value)}
             />
           </li>
-
           <li>
             Salary
             <input
@@ -110,6 +119,7 @@ const Signup = () => {
           </li>
         </form>
       </div>
+      <button onClick={() => history.goBack()}>Back</button>
     </div>
   );
 };
