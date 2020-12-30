@@ -2,7 +2,12 @@ import React from "react";
 import { useState, useEffect } from "react";
 const URL = "https://jsonplaceholder.typicode.com/users";
 
-const Modal = ({setShowModal}) => { 
+const modalTitle = {
+  'add': 'Add new application',
+  'edit': 'Edit application'
+}
+
+const Modal = ({setShowModal, action, currentApp}) => { 
   const [tracker, setTracker] = useState([]);
 
   const [job_title, setJobTitle] = useState("");
@@ -14,7 +19,7 @@ const Modal = ({setShowModal}) => {
   const [notes, setNotes] = useState("");
   const [app_status, setAppStatus] = useState("");
 
-    const fakeUID = 1;
+  const fakeUID = 2;
 
   const addApplication = (e) => {
     e.preventDefault();
@@ -36,13 +41,17 @@ const Modal = ({setShowModal}) => {
         },
         body: JSON.stringify(body),
       })
-        .then((data) => data.json())
+        .then((data) => {
+            data.json()
+            console.log('new application added')
+            setShowModal({action:null, id: null})
+        })
         .catch((err) => console.log("addApplication ERROR: ", err));
   };
 
 
-  const editApplication = (id) => {
-    fetch(`/users/user_id/applications/:step_id`, {
+  const editApplication = () => {
+    fetch(`/user/${fakeUID}/application/${currentApp.id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/JSON",
@@ -50,11 +59,15 @@ const Modal = ({setShowModal}) => {
     }).then((res) => {});
   };
 
-
+// add titles
+// collapse after submit
+// rerender dashboard (Lee's working on this)
+// connect modal to edit buttons => match id of edit button to id of obj in state
   return (
-    //   <div id="addAppWrapper">
         <div id="div3" className="modalWrapper">
+        <h2>{modalTitle[action]}</h2>
           <form onSubmit={addApplication} id="list" className="modalForm">
+            <label>Job Title
               <input
                 type="text"
                 placeholder="Job Title"
@@ -63,6 +76,8 @@ const Modal = ({setShowModal}) => {
                 onChange={(e) => setJobTitle(e.target.value)}
                 required
               />
+            </label>
+            <label>Company
               <input
                 type="text"
                 placeholder="company"
@@ -71,6 +86,8 @@ const Modal = ({setShowModal}) => {
                 onChange={(e) => setCompany(e.target.value)}
                 required
               />
+              </label>
+              <label>How I applied
                 <input
                 type="text"
                 placeholder="how_applied"
@@ -79,6 +96,8 @@ const Modal = ({setShowModal}) => {
                 onChange={(e) => setHowApplied(e.target.value)}
                 required
               />
+            </label>
+            <label>Date applied
               <input
                 type="text"
                 placeholder="date_applied"
@@ -87,7 +106,9 @@ const Modal = ({setShowModal}) => {
                 onChange={(e) => setDateApplied(e.target.value)}
                 required
               />
-                            <input
+              </label>
+              <label>Location
+                <input
                 type="text"
                 placeholder="location"
                 id="location"
@@ -95,8 +116,9 @@ const Modal = ({setShowModal}) => {
                 onChange={(e) => setLocation(e.target.value)}
                 required
               />
-
-                            <input
+                </label>
+            <label>Found on
+              <input
                 type="text"
                 placeholder="found_by"
                 id="found_by"
@@ -104,7 +126,9 @@ const Modal = ({setShowModal}) => {
                 onChange={(e) => setFoundBy(e.target.value)}
                 required
               />
-                            <input
+            </label>
+            <label>Notes
+              <input
                 type="text"
                 placeholder="notes"
                 id="notes"
@@ -112,7 +136,9 @@ const Modal = ({setShowModal}) => {
                 onChange={(e) => setNotes(e.target.value)}
                 required
               />
-                            <input
+            </label>
+            <label>App Status
+              <input
                 type="text"
                 placeholder="app_status"
                 id="app_status"
@@ -120,14 +146,15 @@ const Modal = ({setShowModal}) => {
                 onChange={(e) => setAppStatus(e.target.value)}
                 required
               />
+            </label>
               <div className="modalButtonWrapper">
-                <button className="cancelButton" onClick={() => setShowModal(false)}>cancel</button>
+                <button className="cancelButton" onClick={() => setShowModal({action:null, id: null})}>Cancel</button>
 
-              <button type="submit" className="addButton">add new application</button>
+              <button type="submit" className="addButton">Save </button>
               </div>
           </form>
         </div>
-    //   </div>
+
   );
 };
 

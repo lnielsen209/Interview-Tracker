@@ -6,7 +6,7 @@ import Modal from './Modal.jsx';
 const Dashboard = () => {
   let history = useHistory();
   const [tracker, setTracker] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState({ action: null, id: null}); // none / edit /add 
 
   // get the users data from the DB
   useEffect(async () => {
@@ -94,7 +94,7 @@ const Dashboard = () => {
               <td className="operation">
                 <button
                   className="deleteButton"
-                  onClick={() => editApplication(id)}
+                  onClick={() => setShowModal({action:'edit', id})}
                 >
                   Edit
                 </button>
@@ -126,10 +126,9 @@ const Dashboard = () => {
       <button onClick={() => history.goBack()}>Back</button>
 
       {
-        showModal ? <Modal setShowModal={setShowModal} /> : <button onClick={() => setShowModal(true)}>Add new application</button>
+        showModal.action ? <Modal setShowModal={setShowModal} action={showModal.action} currentApp={tracker[showModal.id]}/> : <button onClick={() => setShowModal({action:'add', id: null})}>Add new application</button>
       }
-      
-
+    
     </>
   );
 };
