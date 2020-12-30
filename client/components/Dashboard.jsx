@@ -1,52 +1,75 @@
+<<<<<<< HEAD
 import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Modal from "./Modal.jsx";
 import Step from "./Step.jsx";
+=======
+import React from 'react';
+import { useState, useEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import Modal from './Modal.jsx';
+>>>>>>> f7bfed97764eb11a3fa248ba1b8601231b2132ca
 
 const Dashboard = () => {
   let history = useHistory();
   const [tracker, setTracker] = useState([]);
   const [showModal, setShowModal] = useState(false);
+<<<<<<< HEAD
 
   // get the users data from the DB
   useEffect(async () => {
+=======
+  const [updateState, setUpdateState] = useState(true);
+
+  const fetchApplications = async () => {
+>>>>>>> f7bfed97764eb11a3fa248ba1b8601231b2132ca
     const resp = await fetch(`/user/2/application`, {
-      method: "GET",
-      headers: { "content-type": "application/JSON" },
+      method: 'GET',
+      headers: { 'content-type': 'application/JSON' },
     });
     const data = await resp.json();
-    console.log(data);
     setTracker(data);
-  }, []);
+    setUpdateState(false);
+  };
+
+  // get the users data from the DB
+  useEffect(() => {
+    if (updateState) fetchApplications();
+  }, [updateState]);
 
   //Delete application from the DB
   const removeApplications = (id) => {
     fetch(`/user/2/application/${id}`, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        "content-type": "application/JSON",
+        'content-type': 'application/JSON',
       },
     }).then((res) => {
-      const del = tracker.filter((tracker) => id !== tracker.id);
-      setTracker(del);
+      setUpdateState(true);
+      // const del = tracker.filter((tracker) => id !== tracker.id);
+      // setTracker(del);
+      // console.log(id);
     });
   };
 
   //Edit applications in the DB
   const editApplication = (id) => {
     fetch(`/user/2/application/${id}`, {
-      method: "PUT",
+      method: 'PUT',
       headers: {
-        "content-type": "application/JSON",
+        'content-type': 'application/JSON',
       },
-    }).then((res) => {});
+    }).then((res) => {
+      setUpdateState(true);
+    });
   };
 
   //this is the header
   //Operation is for Edit and Delete functionality
   const renderHeader = () => {
     let headerElement = [
+<<<<<<< HEAD
       "id",
       "Job title",
       "company",
@@ -57,6 +80,17 @@ const Dashboard = () => {
       "notes",
       "Status application",
       "operation",
+=======
+      'id',
+      'Job title',
+      'company',
+      'found by',
+      'How applied',
+      'date applied',
+      'Location',
+      'notes',
+      'operation',
+>>>>>>> f7bfed97764eb11a3fa248ba1b8601231b2132ca
     ];
 
     //now we will map over these values and output as th
@@ -134,7 +168,11 @@ const Dashboard = () => {
       <button onClick={() => history.goBack()}>Back</button>
 
       {showModal ? (
+<<<<<<< HEAD
         <Modal setShowModal={setShowModal} />
+=======
+        <Modal setShowModal={setShowModal} setUpdateState={setUpdateState} />
+>>>>>>> f7bfed97764eb11a3fa248ba1b8601231b2132ca
       ) : (
         <button onClick={() => setShowModal(true)}>Add new application</button>
       )}
