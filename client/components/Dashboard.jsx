@@ -1,50 +1,13 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
+import Modal from "./Modal.jsx";
+import Step from "./Step.jsx";
 
 const Dashboard = () => {
   let history = useHistory();
   const [tracker, setTracker] = useState([]);
-
-  const [job_title, setJobTitle] = useState("");
-  const [company, setCompany] = useState("");
-  const [how_applied, setHowApplied] = useState("");
-  const [date_applied, setDateApplied] = useState(new Date());
-  const [location, setLocation] = useState("");
-  const [found_by, setFoundBy] = useState("");
-  const [notes, setNotes] = useState("");
-  const [app_status, setAppStatus] = useState("");
-
-  // add application to the DB
-  const addApplication = (e) => {
-    e.preventDefault();
-
-    //check if a name is empty
-    if (job_title === "") {
-      setNameError("required");
-    } else {
-      const body = {
-        job_seeker_id,
-        job_title,
-        company,
-        how_applied,
-        date_applied,
-        location,
-        found_by,
-        notes,
-        app_status,
-      };
-      fetch("/applications/app_id", {
-        method: "POST",
-        headers: {
-          "Content-Type": "Application/JSON",
-        },
-        body: JSON.stringify(body),
-      })
-        .then((data) => data.json())
-        .catch((err) => console.log("ERROR: ", err));
-    }
-  };
+  const [showModal, setShowModal] = useState(false);
 
   // get the users data from the DB
   useEffect(async () => {
@@ -92,6 +55,7 @@ const Dashboard = () => {
       "date applied",
       "Location",
       "notes",
+      "Status application",
       "operation",
     ];
 
@@ -99,6 +63,11 @@ const Dashboard = () => {
     return headerElement.map((key, index) => {
       return <th key={index}>{key.toUpperCase()}</th>;
     });
+  };
+
+  const changeRoute = () => {
+    let path = "/Step";
+    history.push(path);
   };
 
   const renderBody = () => {
@@ -114,6 +83,7 @@ const Dashboard = () => {
           date_applied,
           location,
           notes,
+          app_status,
           operation,
         }) => {
           return (
@@ -126,6 +96,7 @@ const Dashboard = () => {
               <td>{date_applied}</td>
               <td>{location}</td>
               <td>{notes}</td>
+              <td>{app_status}</td>
               <td className="operation">
                 <button
                   className="deleteButton"
@@ -138,6 +109,9 @@ const Dashboard = () => {
                   onClick={() => removeApplications(id)}
                 >
                   Delete
+                </button>
+                <button src="step" className="editStep" onClick={changeRoute}>
+                  Add step
                 </button>
               </td>
             </tr>
@@ -156,9 +130,15 @@ const Dashboard = () => {
         </thead>
         <tbody>{renderBody()}</tbody>
       </table>
+
       <button onClick={() => history.goBack()}>Back</button>
+
+      {showModal ? (
+        <Modal setShowModal={setShowModal} />
+      ) : (
+        <button onClick={() => setShowModal(true)}>Add new application</button>
+      )}
     </>
   );
 };
-
 export default Dashboard;

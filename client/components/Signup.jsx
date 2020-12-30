@@ -44,82 +44,89 @@ const Signup = () => {
     <div id="wrapper">
       <div id="div2">
         <form onSubmit={handleSubmit} id="list">
-          <h1>Create an account</h1>
+          <h1>Create an Account</h1>
+          First Name
           <li>
-            First name:
             <input
               type="text"
-              placeholder="  Ex: John"
+              placeholder="Ex: John"
               id="firstname"
               value={first_name}
               onChange={(e) => setFirstName(e.target.value)}
               required
+              className="inputSignUp"
             />
           </li>
+          Last Name
           <li>
-            Last Name:
             <input
               type="text"
-              placeholder=" Ex: Doe"
+              placeholder="Ex: Doe"
               id="lastname"
               value={last_name}
               onChange={(e) => setLastName(e.target.value)}
               required
+              className="inputSignUp"
             />
           </li>
+          Email Address
           <li>
-            Email address:
             <input
               type="email"
-              placeholder=" Ex: johnDoe@gmail.com"
+              placeholder="Ex: johndoe@gmail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              className="inputSignUp"
             />
           </li>
+          Enter Password
           <li>
-            Enter Password:
             <input
               type="password"
-              placeholder=" Six characters"
+              placeholder="Six Characters"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              className="inputSignUp"
             />
           </li>
+          Re-Enter password
           <li>
-            Re-Enter password:
             <input
               type="password"
-              placeholder=" Same password"
+              placeholder="Confirm Password"
               value={password2}
               onChange={(e) => setPassword2(e.target.value)}
               required
+              className="inputSignUp"
             />
           </li>
+          Enter Date of Birth
           <li>
-            Enter Date of Birth
             <input
               type="date"
               value={dob}
               onChange={(e) => setDOB(e.target.value)}
+              className="inputSignUp"
             />
           </li>
+          Salary
           <li>
-            Salary
             <input
               type="number"
               placeholder="Salary"
               value={cur_salary}
               onChange={(e) => setSalary(e.target.value)}
+              className="inputSignUp"
             />
           </li>
           <li>
-            <input type="submit" value="Create an account" />
+            <input type="submit" value="Create Account" />
+            <button onClick={() => history.goBack()}>Back</button>
           </li>
         </form>
       </div>
-      <button onClick={() => history.goBack()}>Back</button>
     </div>
   );
 };

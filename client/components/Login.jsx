@@ -23,6 +23,8 @@ const Login = () => {
       console.log(resp.status === 200 ? "logged in" : "NOT logged in");
       if (resp.status === 200) {
         history.push("/dashboard");
+
+        // put the user id into the context
       }
     });
   };

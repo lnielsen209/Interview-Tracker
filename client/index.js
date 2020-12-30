@@ -5,7 +5,7 @@ import { render } from "react-dom";
 
 render(
   <BrowserRouter>
-    <App />,
+    <App />
   </BrowserRouter>,
   document.getElementById("app")
 );
