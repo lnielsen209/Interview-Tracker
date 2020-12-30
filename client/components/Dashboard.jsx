@@ -1,53 +1,22 @@
 import React from "react";
 import { useState, useEffect } from "react";
 const URL = "https://jsonplaceholder.typicode.com/users";
+import Modal from './Modal.jsx';
 
 const Dashboard = () => {
   const [tracker, setTracker] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
-  const [job_title, setJobTitle] = useState("");
-  const [company, setCompany] = useState("");
-  const [how_applied, setHowApplied] = useState("");
-  const [date_applied, setDateApplied] = useState(new Date());
-  const [location, setLocation] = useState("");
-  const [found_by, setFoundBy] = useState("");
-  const [notes, setNotes] = useState("");
-  const [app_status, setAppStatus] = useState("");
+  // const [job_title, setJobTitle] = useState("");
+  // const [company, setCompany] = useState("");
+  // const [how_applied, setHowApplied] = useState("");
+  // const [date_applied, setDateApplied] = useState(new Date());
+  // const [location, setLocation] = useState("");
+  // const [found_by, setFoundBy] = useState("");
+  // const [notes, setNotes] = useState("");
+  // const [app_status, setAppStatus] = useState("");
 
-  const addApplication = (e) => {
-    e.preventDefault();
 
-    //check if a name is empty
-    if (job_title === "") {
-      setNameError("required");
-    } else {
-      const body = {
-        job_seeker_id,
-        job_title,
-        company,
-        how_applied,
-        date_applied,
-        location,
-        found_by,
-        notes,
-        app_status,
-      };
-      fetch("/applications/app_id", {
-        method: "POST",
-        headers: {
-          "Content-Type": "Application/JSON",
-        },
-        body: JSON.stringify(body),
-      })
-        .then((data) => data.json())
-        .catch((err) => console.log("ERROR: ", err));
-    }
-  };
-
-  // useEffect to clear job_titleError when `job_title` is changed
-  useEffect(() => {
-    setJobTitle(null);
-  }, [job_title]);
 
   const removeApplications = (id) => {
     fetch(`/users/user_id/applications/:step_id`, {
@@ -59,15 +28,6 @@ const Dashboard = () => {
       const del = tracker.filter((tracker) => id !== tracker.id);
       setTracker(del);
     });
-  };
-
-  const editApplication = (id) => {
-    fetch(`/users/user_id/applications/:step_id`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/JSON",
-      },
-    }).then((res) => {});
   };
 
   //this is the header
@@ -127,40 +87,7 @@ const Dashboard = () => {
       )
     );
   };
-  ///add application form
-  const renderNewApp = () => {
-    return (
-      <div id="addAppWrapper">
-        <div id="div3">
-          <form onSubmit={addApplication} id="list">
-            <li>
-              <input
-                type="text"
-                placeholder="First Name"
-                id="job_title"
-                value={job_title}
-                onChange={(e) => setJobTitle(e.target.value)}
-                required
-              />
-            </li>
-            <li>
-              <input
-                type="text"
-                placeholder="company"
-                id="company"
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
-                required
-              />
-            </li>
-            <li>
-              <button className="addButton">add new application</button>
-            </li>
-          </form>
-        </div>
-      </div>
-    );
-  };
+  
 
   return (
     <>
@@ -171,6 +98,10 @@ const Dashboard = () => {
         </thead>
         <tbody>{renderBody()}</tbody>
       </table>
+      {
+        showModal ? <Modal setShowModal={setShowModal} /> : <button onClick={() => setShowModal(true)}>Add new application</button>
+      }
+      
     </>
   );
 };

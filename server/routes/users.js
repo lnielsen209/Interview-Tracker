@@ -22,7 +22,7 @@ router.post(
   userController.verifyUser,
   sessionController.startSession,
   (req, res) => {
-    res.status(200).json({ you: 'logged in' });
+    res.status(200).json({ id: res.locals.id });
   }
 );
 
