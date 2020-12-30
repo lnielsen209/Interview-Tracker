@@ -6,9 +6,9 @@ import { Link, Redirect, useHistory } from "react-router-dom";
 const Login = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
-
+  
   const history = useHistory();
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     // history.push('/asdfasdf');
@@ -22,7 +22,12 @@ const Login = () => {
     }).then((resp) => {
       console.log(resp.status === 200 ? "logged in" : "NOT logged in");
       if (resp.status === 200) {
+
         history.push("/dashboard");
+
+        // put the user id into the context
+        
+
       }
     });
   };

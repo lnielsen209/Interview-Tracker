@@ -26,7 +26,7 @@ applicationController.getAllApps = (req, res, next) => {
 
 applicationController.addApp = (req, res, next) => {
   const UID = req.params.user_id;
-
+  console.log('UID is:', UID);
   const {
     company,
     job_title,

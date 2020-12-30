@@ -1,50 +1,12 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
+import Modal from './Modal.jsx';
 
 const Dashboard = () => {
   let history = useHistory();
   const [tracker, setTracker] = useState([]);
-
-  const [job_title, setJobTitle] = useState("");
-  const [company, setCompany] = useState("");
-  const [how_applied, setHowApplied] = useState("");
-  const [date_applied, setDateApplied] = useState(new Date());
-  const [location, setLocation] = useState("");
-  const [found_by, setFoundBy] = useState("");
-  const [notes, setNotes] = useState("");
-  const [app_status, setAppStatus] = useState("");
-
-  // add application to the DB
-  const addApplication = (e) => {
-    e.preventDefault();
-
-    //check if a name is empty
-    if (job_title === "") {
-      setNameError("required");
-    } else {
-      const body = {
-        job_seeker_id,
-        job_title,
-        company,
-        how_applied,
-        date_applied,
-        location,
-        found_by,
-        notes,
-        app_status,
-      };
-      fetch("/applications/app_id", {
-        method: "POST",
-        headers: {
-          "Content-Type": "Application/JSON",
-        },
-        body: JSON.stringify(body),
-      })
-        .then((data) => data.json())
-        .catch((err) => console.log("ERROR: ", err));
-    }
-  };
+  const [showModal, setShowModal] = useState(false);
 
   // get the users data from the DB
   useEffect(async () => {
@@ -56,6 +18,7 @@ const Dashboard = () => {
     console.log(data);
     setTracker(data);
   }, []);
+
 
   //Delete application from the DB
   const removeApplications = (id) => {
@@ -70,6 +33,7 @@ const Dashboard = () => {
     });
   };
 
+
   //Edit applications in the DB
   const editApplication = (id) => {
     fetch(`/user/2/application/${id}`, {
@@ -79,6 +43,7 @@ const Dashboard = () => {
       },
     }).then((res) => {});
   };
+
 
   //this is the header
   //Operation is for Edit and Delete functionality
@@ -147,6 +112,7 @@ const Dashboard = () => {
     );
   };
 
+
   return (
     <>
       <h1 id="title">Applications Dashboard</h1>
@@ -156,7 +122,14 @@ const Dashboard = () => {
         </thead>
         <tbody>{renderBody()}</tbody>
       </table>
+
       <button onClick={() => history.goBack()}>Back</button>
+
+      {
+        showModal ? <Modal setShowModal={setShowModal} /> : <button onClick={() => setShowModal(true)}>Add new application</button>
+      }
+      
+
     </>
   );
 };

@@ -17,6 +17,7 @@ router.get(
 );
 
 // add new app
+
 router.post("/", applicationController.addApp, (req, res) => {
   res.status(200).json({});
 });
