@@ -1,8 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
-const URL = "https://jsonplaceholder.typicode.com/users";
+import { Link, useHistory } from "react-router-dom";
 
 const Dashboard = () => {
+  let history = useHistory();
   const [tracker, setTracker] = useState([]);
 
   const [job_title, setJobTitle] = useState("");
@@ -14,6 +15,7 @@ const Dashboard = () => {
   const [notes, setNotes] = useState("");
   const [app_status, setAppStatus] = useState("");
 
+  // add application to the DB
   const addApplication = (e) => {
     e.preventDefault();
 
@@ -44,13 +46,20 @@ const Dashboard = () => {
     }
   };
 
-  // useEffect to clear job_titleError when `job_title` is changed
-  useEffect(() => {
-    setJobTitle(null);
-  }, [job_title]);
+  // get the users data from the DB
+  useEffect(async () => {
+    const resp = await fetch(`/user/2/application`, {
+      method: "GET",
+      headers: { "content-type": "application/JSON" },
+    });
+    const data = await resp.json();
+    console.log(data);
+    setTracker(data);
+  }, []);
 
+  //Delete application from the DB
   const removeApplications = (id) => {
-    fetch(`/users/user_id/applications/:step_id`, {
+    fetch(`/user/2/application/${id}`, {
       method: "DELETE",
       headers: {
         "content-type": "application/JSON",
@@ -61,8 +70,9 @@ const Dashboard = () => {
     });
   };
 
+  //Edit applications in the DB
   const editApplication = (id) => {
-    fetch(`/users/user_id/applications/:step_id`, {
+    fetch(`/user/2/application/${id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/JSON",
@@ -75,13 +85,16 @@ const Dashboard = () => {
   const renderHeader = () => {
     let headerElement = [
       "id",
-      "position",
+      "Job title",
       "company",
-      "salary",
-      "contact",
-      "date entry",
+      "found by",
+      "How applied",
+      "date applied",
+      "Location",
+      "notes",
       "operation",
     ];
+
     //now we will map over these values and output as th
     return headerElement.map((key, index) => {
       return <th key={index}>{key.toUpperCase()}</th>;
@@ -96,24 +109,30 @@ const Dashboard = () => {
           id,
           job_title,
           company,
+          found_by,
           how_applied,
           date_applied,
           location,
-          found_by,
           notes,
-          app_status,
           operation,
         }) => {
           return (
             <tr key={id}>
               <td>{id}</td>
-              <td>{position}</td>
+              <td>{job_title}</td>
               <td>{company}</td>
-              <td>{salary}</td>
-              <td>{contact}</td>
-              <td>{date}</td>
-              <td className="opration">
-                <button></button>
+              <td>{found_by}</td>
+              <td>{how_applied}</td>
+              <td>{date_applied}</td>
+              <td>{location}</td>
+              <td>{notes}</td>
+              <td className="operation">
+                <button
+                  className="deleteButton"
+                  onClick={() => editApplication(id)}
+                >
+                  Edit
+                </button>
                 <button
                   className="button"
                   onClick={() => removeApplications(id)}
@@ -127,40 +146,6 @@ const Dashboard = () => {
       )
     );
   };
-  ///add application form
-  const renderNewApp = () => {
-    return (
-      <div id="addAppWrapper">
-        <div id="div3">
-          <form onSubmit={addApplication} id="list">
-            <li>
-              <input
-                type="text"
-                placeholder="First Name"
-                id="job_title"
-                value={job_title}
-                onChange={(e) => setJobTitle(e.target.value)}
-                required
-              />
-            </li>
-            <li>
-              <input
-                type="text"
-                placeholder="company"
-                id="company"
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
-                required
-              />
-            </li>
-            <li>
-              <button className="addButton">add new application</button>
-            </li>
-          </form>
-        </div>
-      </div>
-    );
-  };
 
   return (
     <>
@@ -171,6 +156,7 @@ const Dashboard = () => {
         </thead>
         <tbody>{renderBody()}</tbody>
       </table>
+      <button onClick={() => history.goBack()}>Back</button>
     </>
   );
 };
