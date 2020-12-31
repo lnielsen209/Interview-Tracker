@@ -13,7 +13,7 @@ router.post(
   userController.createUser,
   sessionController.startSession,
   (req, res) => {
-    res.status(200).json({ you: 'signedup' });
+    res.status(200).json({ id: res.locals.id });
   }
 );
 
