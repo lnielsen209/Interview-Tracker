@@ -9,7 +9,6 @@ applicationController.getAllApps = (req, res, next) => {
   db.query(getAppData, [UID]) // array of variables to use in query
     .then((data) => {
       res.locals.userData = data.rows;
-      console.log(data.rows);
       return next();
     })
     .catch((err) => {
@@ -67,18 +66,75 @@ applicationController.addApp = (req, res, next) => {
     });
 };
 
-// "id" serial NOT NULL,
-// "job_seeker_id" integer NOT NULL,
-// "company" varchar(255) NOT NULL,
-// "job_title" varchar(255) NOT NULL,
-// "how_applied" varchar(255),
-// "date_applied" DATE,
-// "location" varchar(255),
-// "found_by" varchar(255) NOT NULL,
-// "notes" varchar(255),
-// "app_status" integer NOT NULL,
-applicationController.deleteApp = () => {};
+applicationController.deleteApp = (req, res, next) => {
+  const queryText = 'DELETE FROM applications WHERE id = $1';
+  const queryVal = [req.params.app_id];
 
-applicationController.editApp = () => {};
+  db.query(queryText, queryVal)
+    .then(({ rows }) => {
+      res.locals.transaction = rows;
+      return next();
+    })
+    .catch((err) => {
+      return next({
+        log:
+          'applicationsController.deleteApp: ERROR: Error deleting application from database',
+        message: {
+          err:
+            'applicationsController.deleteApp: ERROR: Check database for details',
+        },
+      });
+    });
+};
+
+applicationController.editApp = (req, res, next) => {
+  const {
+    company,
+    job_title,
+    how_applied,
+    date_applied,
+    location,
+    found_by,
+    notes,
+    app_status,
+  } = req.body;
+  const queryText = `UPDATE applications 
+                     SET company = $1, 
+                     job_title = $2, 
+                     how_applied = $3, 
+                     date_applied = $4, 
+                     location = $5, 
+                     found_by = $6, 
+                     notes = $7, 
+                     app_status= $8
+                     WHERE id = $9`;
+  const queryVals = [
+    company,
+    job_title,
+    how_applied,
+    date_applied,
+    location,
+    found_by,
+    notes,
+    app_status,
+    Number(req.params.app_id),
+  ];
+  console.log(queryVals);
+  db.query(queryText, queryVals)
+    .then(({ rows }) => {
+      res.locals.transaction = rows;
+      return next();
+    })
+    .catch((err) => {
+      return next({
+        log:
+          'applicationsController.updateApp: ERROR: Error updating application in database',
+        message: {
+          err:
+            'applicationsController.updateApp: ERROR: Check database for details',
+        },
+      });
+    });
+};
 
 module.exports = applicationController;

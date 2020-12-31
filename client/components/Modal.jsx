@@ -1,6 +1,7 @@
-import React from "react";
-import { useState, useEffect } from "react";
-const URL = "https://jsonplaceholder.typicode.com/users";
+import React from 'react';
+import { useState, useEffect } from 'react';
+const URL = 'https://jsonplaceholder.typicode.com/users';
+
 
 const modalTitle = {
   'add': 'Add new application',
@@ -19,9 +20,11 @@ const Modal = ({setShowModal, action, currentApp}) => {
   const [notes, setNotes] = useState(currentApp.notes || "");
   const [app_status, setAppStatus] = useState(currentApp.app_status || "");
 
+
   const fakeUID = 2;
 
   const addApplication = (body) => {
+
 
       fetch(`/user/${fakeUID}/application`, {
         method: "POST",
@@ -43,8 +46,10 @@ const Modal = ({setShowModal, action, currentApp}) => {
     console.log('call edit app');
     fetch(`/user/${fakeUID}/application/${currentApp.id}`, {
       method: "PUT",
+
+  
       headers: {
-        "content-type": "application/JSON",
+        'content-type': 'application/JSON',
       },
       body: JSON.stringify(body),
     }).then((data) => {
@@ -53,6 +58,7 @@ const Modal = ({setShowModal, action, currentApp}) => {
         setShowModal({action:null, id:null})
     });
   };
+
 
 const handleSubmit = (e) => {
   e.preventDefault();
@@ -171,7 +177,6 @@ console.log('currentapp', currentApp)
               </div>
           </form>
         </div>
-
   );
 };
 
