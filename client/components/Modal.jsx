@@ -1,6 +1,5 @@
 import React from "react";
 import { useState, useEffect } from "react";
-const URL = "https://jsonplaceholder.typicode.com/users";
 
 const modalTitle = {
   'add': 'Add new application',
