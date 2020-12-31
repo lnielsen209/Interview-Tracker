@@ -134,6 +134,8 @@ const Signup = () => {
           </li>
           <li>
             <input type="submit" value="Create Account" />
+          </li>
+          <li>
             <button onClick={() => history.goBack()}>Back</button>
           </li>
         </form>

@@ -39,22 +39,24 @@ body {
 #title {
   text-align: center;
 }
-
+#stepTracker,
 #tracker {
   border-collapse: collapse;
   border: 3px solid #ddd;
 }
 
 #tracker td,
+#stepTracker td,
+#stepTracker th,
 #tracker th {
   border: 1px solid #ddd;
   padding: 12px;
 }
-
+#stepTracker tr:hover,
 #tracker tr:hover {
   background-color: #ddd;
 }
-
+#stepTracker th,
 #tracker th {
   padding: 10px;
   text-align: center;
@@ -124,4 +126,14 @@ body {
 .modalButton {
   margin: 5px;
   padding: 5px;
+}
+
+.inputSignUp {
+  width: 100%;
+  margin-bottom: 15px;
+}
+#list {
+  border: black solid 2px;
+  padding: 10px;
+  text-align: left;
 }

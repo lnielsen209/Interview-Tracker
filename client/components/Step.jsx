@@ -1,118 +1,144 @@
-import React, { useState } from "react";
-import { Link, Redirect, useHistory } from "react-router-dom";
+import React from "react";
+import { useState, useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
+import ModalStep from "./ModalStep.jsx";
 
-const Step = () => {
-  let history = useHistory();
-  const [date, setDate] = useState(new Date());
-  const [step_type, setStepType] = useState("");
-  const [contact_name, setContactName] = useState("");
-  const [contact_role, setContractRole] = useState("");
-  const [contact, setContact] = useState("");
-  const [notes, setNote] = useState("");
+const Steps = () => {
+  const history = useHistory();
+  const [stepTracker, setStepTracker] = useState([]);
 
-  const addStep = (e) => {
-    e.preventDefault();
+  const [showModalStep, setShowModalStep] = useState({
+    action: null,
+    id: null,
+  }); // none / edit /add
 
-    const body = {
-      app_id,
-      date,
-      step_type,
-      contact_name,
-      contact_role,
-      contact,
-      notes,
-    };
-    fetch(`/user/2/application`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "Application/JSON",
-      },
-      body: JSON.stringify(body),
-    })
-      .then((data) => data.json())
-      .catch((err) => console.log("addApplication ERROR: ", err));
-  };
+  const [updateState, setUpdateState] = useState(true);
 
-  const fetchStepsApplications = async () => {
-    const resp = await fetch(`/user/2/application`, {
+  const fetchStep = async () => {
+    const resp = await fetch(`/user/2/steps`, {
       method: "GET",
       headers: { "content-type": "application/JSON" },
     });
     const data = await resp.json();
-    setTracker(data);
+    setStepTracker(data);
     setUpdateState(false);
   };
 
-  const changeRoute = () => {
-    const path = "/dashboard";
-    history.push(path);
+  // get the applications steps data from the DB
+  useEffect(() => {
+    if (updateState) fetchStep();
+  }, [updateState]);
+
+  //Delete step from the DB
+  const removeStep = (app_id) => {
+    fetch(`/user/step/${app_id}`, {
+      method: "DELETE",
+      headers: {
+        "content-type": "application/JSON",
+      },
+    }).then((res) => {
+      setUpdateState(true);
+    });
+  };
+
+  //this is the header
+  //Operation is for Edit and Delete functionality
+  const renderHeader = () => {
+    let headerElement = [
+      "id",
+      "app id",
+      "date",
+      "step_type",
+      "contact_name",
+      "contact_role",
+      "contact",
+      "notes",
+      "operation",
+    ];
+
+    //now we will map over these values and output as th
+    return headerElement.map((key, index) => {
+      return <th key={index}>{key.toUpperCase()}</th>;
+    });
+  };
+
+
+
+  const renderBody = () => {
+    return (
+      stepTracker &&
+      stepTracker.map(
+        (
+          {
+            id,
+            app_id,
+            date,
+            step_type,
+            contact_name,
+            contact_role,
+            contact,
+            notes,
+            operation,
+          },
+          index
+        ) => {
+          return (
+            <tr key={id}>
+              <td>{id}</td>
+              <td>{app_id}</td>
+              <td>{date}</td>
+              <td>{step_type}</td>
+              <td>{contact_name}</td>
+              <td>{contact_role}</td>
+              <td>{contact}</td>
+              <td>{notes}</td>
+              <td>{app_status}</td>
+              <td className="operation">
+                <button
+                  className="deleteButton"
+                  onClick={() =>
+                    setShowModalStep({ action: "edit", app_id: index })
+                  }
+                >
+                  Edit
+                </button>
+                <button className="button" onClick={() => removeStep(id)}>
+                  Delete
+                </button>
+              </td>
+            </tr>
+          );
+        }
+      )
+    );
   };
 
   return (
-    <div id="divSteps" className="addStepWrapper">
-      <form onSubmit={addStep} id="list">
-        <h1>Edit/add your step</h1>
-        <div>
-          <input
-            type="date"
-            id="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="step"
-            id="step_type"
-            value={step_type}
-            onChange={(e) => setStepType(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="contact information"
-            id="contact_name"
-            value={contact_name}
-            onChange={(e) => setContactName(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="contact role"
-            id="contact_role"
-            value={contact_role}
-            onChange={(e) => setContractRole(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="contact"
-            id="contact"
-            value={contact}
-            onChange={(e) => setContact(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="notes"
-            id="notes"
-            value={notes}
-            onChange={(e) => setNote(e.target.value)}
-            required
-          />
-          <div className="ButtonWrapper">
-            <button className="cancelButton" onClick={changeRoute}>
-              cancel
-            </button>
-            <button type="submit">Save</button>
-            <div>
-              <button onClick={() => history.goBack()}>Back</button>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
+    <>
+      <h1 id="title">Applications Steps</h1>
+      <table id="stepTracker">
+        <thead>
+          <tr>{renderHeader()}</tr>
+        </thead>
+        <tbody>{renderBody()}</tbody>
+      </table>
+
+      {showModalStep.action ? (
+        <ModalStep
+          setShowModalStep={setShowModalStep}
+          action={showModalStep.action}
+          currentStep={
+            showModalStep.action === "edit" ? stepTracker[showModalStep.id] : {}
+          }
+        />
+      ) : (
+        <button onClick={() => setShowModalStep({ action: "add", id: null })}>
+          Add new step
+        </button>
+        
+      )}
+      <button onClick={() => history.goBack()}>Back</button>
+    </>
   );
 };
-
-export default Step;
+export default Steps;
