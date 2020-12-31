@@ -1,9 +1,8 @@
-<<<<<<< HEAD
 import React from "react";
 import { useState, useEffect } from "react";
 const URL = "https://jsonplaceholder.typicode.com/users";
 
-const Modal = ({ setShowModal }) => {
+const Modal = ({ setShowModal, setUpdateState }) => {
   const [tracker, setTracker] = useState([]);
 
   const [job_title, setJobTitle] = useState("");
@@ -14,23 +13,6 @@ const Modal = ({ setShowModal }) => {
   const [found_by, setFoundBy] = useState("");
   const [notes, setNotes] = useState("");
   const [app_status, setAppStatus] = useState("");
-=======
-import React from 'react';
-import { useState, useEffect } from 'react';
-const URL = 'https://jsonplaceholder.typicode.com/users';
-
-const Modal = ({ setShowModal, setUpdateState }) => {
-  const [tracker, setTracker] = useState([]);
-
-  const [job_title, setJobTitle] = useState('');
-  const [company, setCompany] = useState('');
-  const [how_applied, setHowApplied] = useState('');
-  const [date_applied, setDateApplied] = useState(new Date());
-  const [location, setLocation] = useState('');
-  const [found_by, setFoundBy] = useState('');
-  const [notes, setNotes] = useState('');
-  const [app_status, setAppStatus] = useState('');
->>>>>>> f7bfed97764eb11a3fa248ba1b8601231b2132ca
 
   const fakeUID = 2;
 
@@ -48,19 +30,9 @@ const Modal = ({ setShowModal, setUpdateState }) => {
       app_status,
     };
     fetch(`/user/${fakeUID}/application`, {
-<<<<<<< HEAD
       method: "POST",
       headers: {
         "Content-Type": "Application/JSON",
-      },
-      body: JSON.stringify(body),
-    })
-      .then((data) => data.json())
-      .catch((err) => console.log("addApplication ERROR: ", err));
-=======
-      method: 'POST',
-      headers: {
-        'Content-Type': 'Application/JSON',
       },
       body: JSON.stringify(body),
     })
@@ -68,21 +40,14 @@ const Modal = ({ setShowModal, setUpdateState }) => {
         data.json();
         setUpdateState(true);
       })
-      .catch((err) => console.log('addApplication ERROR: ', err));
->>>>>>> f7bfed97764eb11a3fa248ba1b8601231b2132ca
+      .catch((err) => console.log("addApplication ERROR: ", err));
   };
 
   const editApplication = (id) => {
     fetch(`/users/user_id/applications/:step_id`, {
-<<<<<<< HEAD
       method: "PUT",
       headers: {
         "content-type": "application/JSON",
-=======
-      method: 'PUT',
-      headers: {
-        'content-type': 'application/JSON',
->>>>>>> f7bfed97764eb11a3fa248ba1b8601231b2132ca
       },
     }).then((res) => {});
   };

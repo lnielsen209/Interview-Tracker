@@ -1,32 +1,19 @@
-<<<<<<< HEAD
 import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Modal from "./Modal.jsx";
 import Step from "./Step.jsx";
-=======
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import Modal from './Modal.jsx';
->>>>>>> f7bfed97764eb11a3fa248ba1b8601231b2132ca
 
 const Dashboard = () => {
   let history = useHistory();
   const [tracker, setTracker] = useState([]);
   const [showModal, setShowModal] = useState(false);
-<<<<<<< HEAD
-
-  // get the users data from the DB
-  useEffect(async () => {
-=======
   const [updateState, setUpdateState] = useState(true);
 
   const fetchApplications = async () => {
->>>>>>> f7bfed97764eb11a3fa248ba1b8601231b2132ca
     const resp = await fetch(`/user/2/application`, {
-      method: 'GET',
-      headers: { 'content-type': 'application/JSON' },
+      method: "GET",
+      headers: { "content-type": "application/JSON" },
     });
     const data = await resp.json();
     setTracker(data);
@@ -41,9 +28,9 @@ const Dashboard = () => {
   //Delete application from the DB
   const removeApplications = (id) => {
     fetch(`/user/2/application/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'content-type': 'application/JSON',
+        "content-type": "application/JSON",
       },
     }).then((res) => {
       setUpdateState(true);
@@ -56,9 +43,9 @@ const Dashboard = () => {
   //Edit applications in the DB
   const editApplication = (id) => {
     fetch(`/user/2/application/${id}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'content-type': 'application/JSON',
+        "content-type": "application/JSON",
       },
     }).then((res) => {
       setUpdateState(true);
@@ -69,7 +56,6 @@ const Dashboard = () => {
   //Operation is for Edit and Delete functionality
   const renderHeader = () => {
     let headerElement = [
-<<<<<<< HEAD
       "id",
       "Job title",
       "company",
@@ -78,19 +64,8 @@ const Dashboard = () => {
       "date applied",
       "Location",
       "notes",
-      "Status application",
+      "App status",
       "operation",
-=======
-      'id',
-      'Job title',
-      'company',
-      'found by',
-      'How applied',
-      'date applied',
-      'Location',
-      'notes',
-      'operation',
->>>>>>> f7bfed97764eb11a3fa248ba1b8601231b2132ca
     ];
 
     //now we will map over these values and output as th
@@ -168,11 +143,7 @@ const Dashboard = () => {
       <button onClick={() => history.goBack()}>Back</button>
 
       {showModal ? (
-<<<<<<< HEAD
-        <Modal setShowModal={setShowModal} />
-=======
         <Modal setShowModal={setShowModal} setUpdateState={setUpdateState} />
->>>>>>> f7bfed97764eb11a3fa248ba1b8601231b2132ca
       ) : (
         <button onClick={() => setShowModal(true)}>Add new application</button>
       )}

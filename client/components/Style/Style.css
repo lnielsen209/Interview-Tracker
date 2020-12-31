@@ -2,13 +2,8 @@ body {
   text-align: center;
   width: 100%;
   margin: 0 auto;
-<<<<<<< HEAD
-  padding: 10px;
-  font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
-=======
   padding: 0px;
-  font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;
->>>>>>> f7bfed97764eb11a3fa248ba1b8601231b2132ca
+  font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
   background: linear-gradient(white, #d3d8e8);
 }
 
@@ -75,7 +70,7 @@ body {
   border: none;
   outline: none;
   font-size: 11px;
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Quicksand", sans-serif;
   color: #f44336;
   padding: 3px 10px;
   border-radius: 8px;
@@ -88,16 +83,6 @@ body {
   border: 1px solid blue;
 }
 
-<<<<<<< HEAD
-#list {
-  border: black solid 2px;
-  text-align: left;
-  padding: 10px;
-}
-.inputSignUp {
-  width: 100%;
-  margin-bottom: 15px;
-=======
 .modalForm {
   display: flex;
   flex-direction: column;
@@ -116,5 +101,4 @@ body {
 .modalButtonWrapper {
   padding: 15px;
   display: flex;
->>>>>>> f7bfed97764eb11a3fa248ba1b8601231b2132ca
 }

@@ -22,7 +22,7 @@ const Step = () => {
       contact,
       notes,
     };
-    fetch(`/users/steps`, {
+    fetch(`/user/2/application`, {
       method: "POST",
       headers: {
         "Content-Type": "Application/JSON",
@@ -31,6 +31,16 @@ const Step = () => {
     })
       .then((data) => data.json())
       .catch((err) => console.log("addApplication ERROR: ", err));
+  };
+
+  const fetchStepsApplications = async () => {
+    const resp = await fetch(`/user/2/application`, {
+      method: "GET",
+      headers: { "content-type": "application/JSON" },
+    });
+    const data = await resp.json();
+    setTracker(data);
+    setUpdateState(false);
   };
 
   const changeRoute = () => {
