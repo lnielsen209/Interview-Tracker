@@ -1,22 +1,21 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import Modal from './Modal.jsx';
+import React from "react";
+import { useState, useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
+import Modal from "./Modal.jsx";
+import Step from "./Step.jsx";
 
 const Dashboard = () => {
   let history = useHistory();
   const [tracker, setTracker] = useState([]);
 
-  const [showModal, setShowModal] = useState({ action: null, id: null}); // none / edit /add 
+  const [showModal, setShowModal] = useState({ action: null, id: null }); // none / edit /add
 
-  
   const [updateState, setUpdateState] = useState(true);
-
 
   const fetchApplications = async () => {
     const resp = await fetch(`/user/2/application`, {
-      method: 'GET',
-      headers: { 'content-type': 'application/JSON' },
+      method: "GET",
+      headers: { "content-type": "application/JSON" },
     });
     const data = await resp.json();
     setTracker(data);
@@ -31,9 +30,9 @@ const Dashboard = () => {
   //Delete application from the DB
   const removeApplications = (id) => {
     fetch(`/user/2/application/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'content-type': 'application/JSON',
+        "content-type": "application/JSON",
       },
     }).then((res) => {
       setUpdateState(true);
@@ -47,15 +46,16 @@ const Dashboard = () => {
   //Operation is for Edit and Delete functionality
   const renderHeader = () => {
     let headerElement = [
-      'id',
-      'Job title',
-      'company',
-      'found by',
-      'How applied',
-      'date applied',
-      'Location',
-      'notes',
-      'operation',
+      "id",
+      "Job title",
+      "company",
+      "found by",
+      "How applied",
+      "date applied",
+      "Location",
+      "notes",
+      "App status",
+      "operation",
     ];
 
     //now we will map over these values and output as th
@@ -64,25 +64,30 @@ const Dashboard = () => {
     });
   };
 
-  console.log('tracker', tracker)
-  console.log('tracker[showModal.id]', tracker[showModal.id])
-  console.log('showModal.id', showModal.id)
+  const changeRoute = () => {
+    let path = "/Step";
+    history.push(path);
+  };
 
   const renderBody = () => {
     return (
       tracker &&
       tracker.map(
-        ({
-          id,
-          job_title,
-          company,
-          found_by,
-          how_applied,
-          date_applied,
-          location,
-          notes,
-          operation,
-        }, index) => {
+        (
+          {
+            id,
+            job_title,
+            company,
+            found_by,
+            how_applied,
+            date_applied,
+            location,
+            notes,
+            app_status,
+            operation,
+          },
+          index
+        ) => {
           return (
             <tr key={id}>
               <td>{id}</td>
@@ -93,10 +98,11 @@ const Dashboard = () => {
               <td>{date_applied}</td>
               <td>{location}</td>
               <td>{notes}</td>
+              <td>{app_status}</td>
               <td className="operation">
                 <button
                   className="deleteButton"
-                  onClick={() => setShowModal({action:'edit', id: index})}
+                  onClick={() => setShowModal({ action: "edit", id: index })}
                 >
                   Edit
                 </button>
@@ -105,6 +111,9 @@ const Dashboard = () => {
                   onClick={() => removeApplications(id)}
                 >
                   Delete
+                </button>
+                <button src="step" className="editStep" onClick={changeRoute}>
+                  Add step
                 </button>
               </td>
             </tr>
@@ -126,14 +135,18 @@ const Dashboard = () => {
 
       <button onClick={() => history.goBack()}>Back</button>
 
-
-      {
-        showModal.action ? <Modal setShowModal={setShowModal} action={showModal.action} currentApp={showModal.action === 'edit' ? tracker[showModal.id] : {}}/> : <button onClick={() => setShowModal({action:'add', id: null})}>Add new application</button>
-      }
-    
-
+      {showModal.action ? (
+        <Modal
+          setShowModal={setShowModal}
+          action={showModal.action}
+          currentApp={showModal.action === "edit" ? tracker[showModal.id] : {}}
+        />
+      ) : (
+        <button onClick={() => setShowModal({ action: "add", id: null })}>
+          Add new application
+        </button>
+      )}
     </>
   );
 };
-
 export default Dashboard;
