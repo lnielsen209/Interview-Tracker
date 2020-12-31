@@ -1,25 +1,28 @@
 import React from "react";
 import { useState, useEffect } from "react";
-const URL = "https://jsonplaceholder.typicode.com/users";
+import { Link, useHistory } from "react-router-dom";
 import Modal from './Modal.jsx';
 
 const Dashboard = () => {
+  let history = useHistory();
   const [tracker, setTracker] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState({ action: null, id: null}); // none / edit /add 
 
-  // const [job_title, setJobTitle] = useState("");
-  // const [company, setCompany] = useState("");
-  // const [how_applied, setHowApplied] = useState("");
-  // const [date_applied, setDateApplied] = useState(new Date());
-  // const [location, setLocation] = useState("");
-  // const [found_by, setFoundBy] = useState("");
-  // const [notes, setNotes] = useState("");
-  // const [app_status, setAppStatus] = useState("");
+  // get the users data from the DB
+  useEffect(async () => {
+    const resp = await fetch(`/user/2/application`, {
+      method: "GET",
+      headers: { "content-type": "application/JSON" },
+    });
+    const data = await resp.json();
+    console.log(data);
+    setTracker(data);
+  }, []);
 
 
-
+  //Delete application from the DB
   const removeApplications = (id) => {
-    fetch(`/users/user_id/applications/:step_id`, {
+    fetch(`/user/2/application/${id}`, {
       method: "DELETE",
       headers: {
         "content-type": "application/JSON",
@@ -30,23 +33,42 @@ const Dashboard = () => {
     });
   };
 
+
+  //Edit applications in the DB
+  // const editApplication = (id) => {
+  //   fetch(`/user/2/application/${id}`, {
+  //     method: "PUT",
+  //     headers: {
+  //       "content-type": "application/JSON",
+  //     },
+  //   }).then((res) => {});
+  // };
+
+
   //this is the header
   //Operation is for Edit and Delete functionality
   const renderHeader = () => {
     let headerElement = [
       "id",
-      "position",
+      "Job title",
       "company",
-      "salary",
-      "contact",
-      "date entry",
+      "found by",
+      "How applied",
+      "date applied",
+      "Location",
+      "notes",
       "operation",
     ];
+
     //now we will map over these values and output as th
     return headerElement.map((key, index) => {
       return <th key={index}>{key.toUpperCase()}</th>;
     });
   };
+
+  console.log('tracker', tracker)
+  console.log('tracker[showModal.id]', tracker[showModal.id])
+  console.log('showModal.id', showModal.id)
 
   const renderBody = () => {
     return (
@@ -56,24 +78,30 @@ const Dashboard = () => {
           id,
           job_title,
           company,
+          found_by,
           how_applied,
           date_applied,
           location,
-          found_by,
           notes,
-          app_status,
           operation,
-        }) => {
+        }, index) => {
           return (
             <tr key={id}>
               <td>{id}</td>
-              <td>{position}</td>
+              <td>{job_title}</td>
               <td>{company}</td>
-              <td>{salary}</td>
-              <td>{contact}</td>
-              <td>{date}</td>
-              <td className="opration">
-                <button></button>
+              <td>{found_by}</td>
+              <td>{how_applied}</td>
+              <td>{date_applied}</td>
+              <td>{location}</td>
+              <td>{notes}</td>
+              <td className="operation">
+                <button
+                  className="deleteButton"
+                  onClick={() => setShowModal({action:'edit', id: index})}
+                >
+                  Edit
+                </button>
                 <button
                   className="button"
                   onClick={() => removeApplications(id)}
@@ -87,7 +115,7 @@ const Dashboard = () => {
       )
     );
   };
-  
+
 
   return (
     <>
@@ -98,10 +126,13 @@ const Dashboard = () => {
         </thead>
         <tbody>{renderBody()}</tbody>
       </table>
+
+      <button onClick={() => history.goBack()}>Back</button>
+
       {
-        showModal ? <Modal setShowModal={setShowModal} /> : <button onClick={() => setShowModal(true)}>Add new application</button>
+        showModal.action ? <Modal setShowModal={setShowModal} action={showModal.action} currentApp={showModal.action === 'edit' ? tracker[showModal.id] : {}}/> : <button onClick={() => setShowModal({action:'add', id: null})}>Add new application</button>
       }
-      
+    
     </>
   );
 };
