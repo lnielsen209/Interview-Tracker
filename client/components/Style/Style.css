@@ -2,8 +2,8 @@ body {
   text-align: center;
   width: 100%;
   margin: 0 auto;
-  padding: 10px;
-  font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+  padding: 0px;
+  font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;
   background: linear-gradient(white, #d3d8e8);
 }
 
@@ -72,7 +72,7 @@ body {
   border: none;
   outline: none;
   font-size: 11px;
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Quicksand', sans-serif;
   color: #f44336;
   padding: 3px 10px;
   border-radius: 8px;
@@ -85,18 +85,35 @@ body {
   border: 1px solid blue;
 }
 
-.modalForm {
-  display: flex;
-  flex-direction: column;
-}
-
 .modalForm input {
   margin: 5px;
   padding: 3px;
 }
 
 .modalWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.9);
+  height: 100%;
+  z-index: 10;
+}
+
+.modalBackground {
+  background: white;
   width: 50%;
+  height: 40%;
+  padding: 30px;
+}
+
+.modalForm {
+  display: flex;
+  /* width: 50%; */
+  flex-direction: column;
   margin: 0 auto;
 }
 

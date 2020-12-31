@@ -1,8 +1,10 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Modal from "./Modal.jsx";
 import Step from "./Step.jsx";
+import { UserContext } from '../App.jsx';
+
 
 const Dashboard = () => {
   let history = useHistory();
@@ -11,6 +13,9 @@ const Dashboard = () => {
   const [showModal, setShowModal] = useState({ action: null, id: null }); // none / edit /add
 
   const [updateState, setUpdateState] = useState(true);
+
+  const context = useContext(UserContext);
+  console.log('context user', context.user.id);
 
   const fetchApplications = async () => {
     const resp = await fetch(`/user/2/application`, {
@@ -138,6 +143,7 @@ const Dashboard = () => {
       {showModal.action ? (
         <Modal
           setShowModal={setShowModal}
+          setUpdateState={setUpdateState}
           action={showModal.action}
           currentApp={showModal.action === "edit" ? tracker[showModal.id] : {}}
         />
