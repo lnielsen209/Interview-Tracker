@@ -10,30 +10,19 @@ const modalTitle = {
 const Modal = ({setShowModal, action, currentApp}) => { 
   const [tracker, setTracker] = useState([]);
 
-  const [job_title, setJobTitle] = useState("");
-  const [company, setCompany] = useState("");
-  const [how_applied, setHowApplied] = useState("");
+  const [job_title, setJobTitle] = useState(currentApp.job_title || '');
+  const [company, setCompany] = useState(currentApp.company || "");
+  const [how_applied, setHowApplied] = useState(currentApp.how_applied || "");
   const [date_applied, setDateApplied] = useState(new Date());
-  const [location, setLocation] = useState("");
-  const [found_by, setFoundBy] = useState("");
-  const [notes, setNotes] = useState("");
-  const [app_status, setAppStatus] = useState("");
+  const [location, setLocation] = useState(currentApp.location || "");
+  const [found_by, setFoundBy] = useState(currentApp.found_by || "");
+  const [notes, setNotes] = useState(currentApp.notes || "");
+  const [app_status, setAppStatus] = useState(currentApp.app_status || "");
 
   const fakeUID = 2;
 
-  const addApplication = (e) => {
-    e.preventDefault();
+  const addApplication = (body) => {
 
-      const body = {
-        job_title,
-        company,
-        how_applied,
-        date_applied,
-        location,
-        found_by,
-        notes,
-        app_status,
-      };
       fetch(`/user/${fakeUID}/application`, {
         method: "POST",
         headers: {
@@ -50,23 +39,51 @@ const Modal = ({setShowModal, action, currentApp}) => {
   };
 
 
-  const editApplication = () => {
+  const editApplication = (body) => {
+    console.log('call edit app');
     fetch(`/user/${fakeUID}/application/${currentApp.id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/JSON",
       },
-    }).then((res) => {});
+      body: JSON.stringify(body),
+    }).then((data) => {
+        data.json()
+        console.log(`application updated`)
+        setShowModal({action:null, id:null})
+    });
   };
 
-// add titles
-// collapse after submit
-// rerender dashboard (Lee's working on this)
-// connect modal to edit buttons => match id of edit button to id of obj in state
+const handleSubmit = (e) => {
+  e.preventDefault();
+
+  const body = {
+    job_title,
+    company,
+    how_applied,
+    date_applied,
+    location,
+    found_by,
+    notes,
+    app_status,
+  };
+
+  if(action === 'edit') {
+    editApplication(body);
+  } else {
+    addApplication(body);
+  }
+}
+
+console.log('currentapp', currentApp)
   return (
         <div id="div3" className="modalWrapper">
         <h2>{modalTitle[action]}</h2>
-          <form onSubmit={addApplication} id="list" className="modalForm">
+          <form 
+            // onSubmit={handleSubmit} doesn't work
+            id="list" 
+            className="modalForm"
+          >
             <label>Job Title
               <input
                 type="text"
@@ -148,9 +165,9 @@ const Modal = ({setShowModal, action, currentApp}) => {
               />
             </label>
               <div className="modalButtonWrapper">
-                <button className="cancelButton" onClick={() => setShowModal({action:null, id: null})}>Cancel</button>
+                <button className="modalButton" onClick={() => setShowModal({action:null, id: null})}>Cancel</button>
 
-              <button type="submit" className="addButton">Save </button>
+              <button type="submit" className="modalButton" onClick={handleSubmit}>Save </button>
               </div>
           </form>
         </div>

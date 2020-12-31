@@ -35,14 +35,14 @@ const Dashboard = () => {
 
 
   //Edit applications in the DB
-  const editApplication = (id) => {
-    fetch(`/user/2/application/${id}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/JSON",
-      },
-    }).then((res) => {});
-  };
+  // const editApplication = (id) => {
+  //   fetch(`/user/2/application/${id}`, {
+  //     method: "PUT",
+  //     headers: {
+  //       "content-type": "application/JSON",
+  //     },
+  //   }).then((res) => {});
+  // };
 
 
   //this is the header
@@ -66,6 +66,10 @@ const Dashboard = () => {
     });
   };
 
+  console.log('tracker', tracker)
+  console.log('tracker[showModal.id]', tracker[showModal.id])
+  console.log('showModal.id', showModal.id)
+
   const renderBody = () => {
     return (
       tracker &&
@@ -80,7 +84,7 @@ const Dashboard = () => {
           location,
           notes,
           operation,
-        }) => {
+        }, index) => {
           return (
             <tr key={id}>
               <td>{id}</td>
@@ -94,7 +98,7 @@ const Dashboard = () => {
               <td className="operation">
                 <button
                   className="deleteButton"
-                  onClick={() => setShowModal({action:'edit', id})}
+                  onClick={() => setShowModal({action:'edit', id: index})}
                 >
                   Edit
                 </button>
@@ -126,7 +130,7 @@ const Dashboard = () => {
       <button onClick={() => history.goBack()}>Back</button>
 
       {
-        showModal.action ? <Modal setShowModal={setShowModal} action={showModal.action} currentApp={tracker[showModal.id]}/> : <button onClick={() => setShowModal({action:'add', id: null})}>Add new application</button>
+        showModal.action ? <Modal setShowModal={setShowModal} action={showModal.action} currentApp={showModal.action === 'edit' ? tracker[showModal.id] : {}}/> : <button onClick={() => setShowModal({action:'add', id: null})}>Add new application</button>
       }
     
     </>
