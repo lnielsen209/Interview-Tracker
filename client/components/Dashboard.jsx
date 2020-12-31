@@ -6,8 +6,12 @@ import Modal from './Modal.jsx';
 const Dashboard = () => {
   let history = useHistory();
   const [tracker, setTracker] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+
+  const [showModal, setShowModal] = useState({ action: null, id: null}); // none / edit /add 
+
+  
   const [updateState, setUpdateState] = useState(true);
+
 
   const fetchApplications = async () => {
     const resp = await fetch(`/user/2/application`, {
@@ -39,18 +43,6 @@ const Dashboard = () => {
     });
   };
 
-  //Edit applications in the DB
-  const editApplication = (id) => {
-    fetch(`/user/2/application/${id}`, {
-      method: 'PUT',
-      headers: {
-        'content-type': 'application/JSON',
-      },
-    }).then((res) => {
-      setUpdateState(true);
-    });
-  };
-
   //this is the header
   //Operation is for Edit and Delete functionality
   const renderHeader = () => {
@@ -72,6 +64,10 @@ const Dashboard = () => {
     });
   };
 
+  console.log('tracker', tracker)
+  console.log('tracker[showModal.id]', tracker[showModal.id])
+  console.log('showModal.id', showModal.id)
+
   const renderBody = () => {
     return (
       tracker &&
@@ -86,7 +82,7 @@ const Dashboard = () => {
           location,
           notes,
           operation,
-        }) => {
+        }, index) => {
           return (
             <tr key={id}>
               <td>{id}</td>
@@ -100,7 +96,7 @@ const Dashboard = () => {
               <td className="operation">
                 <button
                   className="deleteButton"
-                  onClick={() => editApplication(id)}
+                  onClick={() => setShowModal({action:'edit', id: index})}
                 >
                   Edit
                 </button>
@@ -130,11 +126,12 @@ const Dashboard = () => {
 
       <button onClick={() => history.goBack()}>Back</button>
 
-      {showModal ? (
-        <Modal setShowModal={setShowModal} setUpdateState={setUpdateState} />
-      ) : (
-        <button onClick={() => setShowModal(true)}>Add new application</button>
-      )}
+
+      {
+        showModal.action ? <Modal setShowModal={setShowModal} action={showModal.action} currentApp={showModal.action === 'edit' ? tracker[showModal.id] : {}}/> : <button onClick={() => setShowModal({action:'add', id: null})}>Add new application</button>
+      }
+    
+
     </>
   );
 };
