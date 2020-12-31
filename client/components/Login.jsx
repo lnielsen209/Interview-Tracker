@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import "./Style/Style.css";
 import { Link, Redirect, useHistory } from "react-router-dom";
+import { UserContext } from '../App.jsx';
 
 const Login = () => {
   const [username, setUserName] = useState("");
@@ -9,9 +10,14 @@ const Login = () => {
 
   const history = useHistory();
 
+  const context = useContext(UserContext);
+  // console.log('user', context.user);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // history.push('/asdfasdf');
+
+    let responseStatus = 0;
 
     fetch("/user/login", {
       method: "POST",
@@ -21,12 +27,17 @@ const Login = () => {
       body: JSON.stringify({ username, password }),
     }).then((resp) => {
       console.log(resp.status === 200 ? "logged in" : "NOT logged in");
-      if (resp.status === 200) {
+      if (resp.status === 200) responseStatus = 200;
+      return resp.json();
+    }).then((data) => {
+      
+      if (responseStatus === 200) {
+        console.log('data', data);
+        context.saveUser(data.id);
         history.push("/dashboard");
-
-        // put the user id into the context
       }
-    });
+    })
+    .catch(err => console.log('err', err));
   };
 
   return (

@@ -5,9 +5,11 @@ const applicationController = {};
 applicationController.getAllApps = (req, res, next) => {
   const UID = req.params.user_id;
   // get user's personal data
-  const getAppData = 'SELECT * FROM applications WHERE job_seeker_id = $1';
+  const getAppData =
+    'SELECT * FROM applications WHERE job_seeker_id = $1 ORDER BY id ASC';
   db.query(getAppData, [UID]) // array of variables to use in query
     .then((data) => {
+      // console.log(data.rows);
       res.locals.userData = data.rows;
       return next();
     })
