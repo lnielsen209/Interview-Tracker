@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, Redirect, useHistory } from "react-router-dom";
+import { UserContext } from '../App.jsx';
 
 const Signup = () => {
   let history = useHistory();
@@ -11,9 +12,12 @@ const Signup = () => {
   const [dob, setDOB] = useState(new Date());
   const [cur_salary, setSalary] = useState(0);
 
+  const context = useContext(UserContext);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    let responseStatus = 0;
     // check if passwords match before submit
     if (password !== password2) {
       alert("password does not match");
@@ -33,10 +37,17 @@ const Signup = () => {
         }),
       }).then((resp) => {
         console.log(resp.status === 200 ? "logged in" : "NOT logged in");
-        if (resp.status === 200) {
+        if (resp.status === 200) responseStatus = 200;
+        return resp.json();
+      }).then((data) => {
+        
+        if (responseStatus === 200) {
+          console.log('data', data);
+          context.saveUser(data.id);
           history.push("/dashboard");
         }
-      });
+      })
+      .catch(err => console.log('err', err));
     }
   };
 

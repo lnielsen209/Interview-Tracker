@@ -7,21 +7,39 @@ import Step from "../client/components/Step";
 import useToken from "./useToken";
 import { Route, Switch, Link, BrowserRouter } from "react-router-dom";
 
-// const UserContext = React.createContext();
+export const UserContext = React.createContext(); 
 
-// const UserContext = React.createContext();
+const UserProvider = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState(
+    {id: null}
+  )
 
+  const saveUser = (id) => {
+    console.log('save user', id);
+    setCurrentUser({id})
+  }
+
+  return(
+    <UserContext.Provider
+      value={{user: currentUser, saveUser}}
+    >
+      {children}
+    </UserContext.Provider>
+  )
+}
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/" component={Login} />
-        <Route path="/dashboard" component={Dashboard} />
-        <Route path="/signup" component={Signup} />
-        <Route path="/step" component={Step} />
-      </Switch>
-    </BrowserRouter>
+    <UserProvider>
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/" component={Login} />
+          <Route path="/dashboard" component={Dashboard} />
+          <Route path="/signup" component={Signup} />
+          <Route path="/step" component={Step} />
+        </Switch>
+      </BrowserRouter>
+    </UserProvider>
   );
 };
 
