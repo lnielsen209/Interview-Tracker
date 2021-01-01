@@ -1,10 +1,35 @@
+@font-face {
+  font-family: 'Clarendon';
+  src: url('//db.onlinewebfonts.com/t/51430e57421d8cb4cea86dcd577ec180.eot');
+  src: url('//db.onlinewebfonts.com/t/51430e57421d8cb4cea86dcd577ec180.eot?#iefix')
+      format('embedded-opentype'),
+    url('//db.onlinewebfonts.com/t/51430e57421d8cb4cea86dcd577ec180.woff2')
+      format('woff2'),
+    url('//db.onlinewebfonts.com/t/51430e57421d8cb4cea86dcd577ec180.woff')
+      format('woff'),
+    url('//db.onlinewebfonts.com/t/51430e57421d8cb4cea86dcd577ec180.ttf')
+      format('truetype'),
+    url('//db.onlinewebfonts.com/t/51430e57421d8cb4cea86dcd577ec180.svg#Clarendon')
+      format('svg');
+}
+
+h1 {
+  font-weight: lighter;
+  font-family: 'clarendon';
+  font-size: 1.5em;
+}
+
 body {
   text-align: center;
   width: 100%;
   margin: 0 auto;
   padding: 0px;
-  font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;
-  background: linear-gradient(white, #d3d8e8);
+  /* font-family: 'lucida grande', tahoma, verdana, arial, sans-serif; */
+  /* background: linear-gradient(white, #d3d8e8); */
+  background: #abcaf9;
+  font-family: 'futura';
+  font-weight: lighter;
+  color: #0e0e0e;
 }
 
 .wrapper {
@@ -34,22 +59,38 @@ body {
   align-items: center;
 }
 
+input {
+  border-radius: 5px;
+  border: 1px solid #8a8989;
+  margin: 5px 0;
+}
+
 /* application table */
+.tableContainer {
+  display: flex;
+  justify-content: center;
+}
 
 #title {
   text-align: center;
+  font-family: 'futura';
+  font-size: 2em;
+  font-weight: 400;
 }
+
 #stepTracker,
 #tracker {
   border-collapse: collapse;
-  border: 3px solid #ddd;
+  /* border: 3px solid #ddd; */
+  background: #ffffff;
+  margin: 20px;
 }
 
 #tracker td,
 #stepTracker td,
 #stepTracker th,
 #tracker th {
-  border: 1px solid #ddd;
+  /* border: 1px solid #ddd; */
   padding: 12px;
 }
 #stepTracker tr:hover,
@@ -60,11 +101,13 @@ body {
 #tracker th {
   padding: 10px;
   text-align: center;
-  background-color: #4caf50;
-  color: white;
+  background-color: #fbb829;
+  color: #195ec3;
+  font-weight: 500;
+  font-size: 1.1em;
 }
 
-.opration {
+.operation {
   text-align: center;
 }
 
@@ -101,12 +144,13 @@ body {
   background: rgba(0, 0, 0, 0.9);
   height: 100%;
   z-index: 10;
+  color: #195ec3;
 }
 
 .modalBackground {
-  background: white;
+  background: #fefbaf;
   width: 50%;
-  height: 40%;
+  height: 90%;
   padding: 30px;
 }
 
@@ -115,6 +159,13 @@ body {
   /* width: 50%; */
   flex-direction: column;
   margin: 0 auto;
+}
+
+.modalForm input {
+  margin: 7px 0 15px 0;
+  display: block;
+  text-align: left;
+  width: 100%;
 }
 
 .modalButtonWrapper {
@@ -137,3 +188,29 @@ body {
   padding: 10px;
   text-align: left;
 }
+
+#sticky {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: #ffe545;
+  color: #195ec3;
+  padding: 15px;
+  padding-left: 25px;
+  text-align: left;
+}
+
+/* colors 
+primary yellow: ffe545
+pale yellow: FEFBAF
+light blue: #abcaf9
+dark blue: #195ec3
+goldenrod: C2A34F
+orange: FBB829
+*/
+
+/* @media (max-width: 900px) {
+  .low-priority-col {
+    display: none;
+  }
+} */

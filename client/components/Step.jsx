@@ -1,10 +1,13 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import ModalStep from "./ModalStep.jsx";
+import { UserContext } from '../App.jsx';
 
 const Steps = () => {
   const history = useHistory();
+  const { state } = useLocation();
+  console.log('state', state);
   const [stepTracker, setStepTracker] = useState([]);
 
   const [showModalStep, setShowModalStep] = useState({
@@ -14,8 +17,10 @@ const Steps = () => {
 
   const [updateState, setUpdateState] = useState(true);
 
+  const context = useContext(UserContext);
+
   const fetchStep = async () => {
-    const resp = await fetch(`/user/2/steps`, {
+    const resp = await fetch(`/user/${context.user.id}/application/${state.appId}/step`, {
       method: "GET",
       headers: { "content-type": "application/JSON" },
     });
@@ -31,7 +36,7 @@ const Steps = () => {
 
   //Delete step from the DB
   const removeStep = (app_id) => {
-    fetch(`/user/step/${app_id}`, {
+    fetch(`/user/${context.user.id}/application/${app_id}/step`, {
       method: "DELETE",
       headers: {
         "content-type": "application/JSON",
@@ -125,14 +130,16 @@ const Steps = () => {
 
       {showModalStep.action ? (
         <ModalStep
-          setShowModalStep={setShowModalStep}
+          //setShowModalStep={setShowModalStep}
+          setModalStep={setShowModalStep}
           action={showModalStep.action}
           currentStep={
             showModalStep.action === "edit" ? stepTracker[showModalStep.id] : {}
           }
+          appId={state.appId}
         />
       ) : (
-        <button onClick={() => setShowModalStep({ action: "add", id: null })}>
+        <button onClick={() => setShowModalStep({ action: "add", id: state.appId })}>
           Add new step
         </button>
         

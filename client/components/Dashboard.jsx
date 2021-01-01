@@ -8,6 +8,9 @@ import { UserContext } from '../App.jsx';
 
 const Dashboard = () => {
   let history = useHistory();
+
+
+
   const [tracker, setTracker] = useState([]);
 
   const [showModal, setShowModal] = useState({ action: null, id: null }); // none / edit /add
@@ -18,7 +21,7 @@ const Dashboard = () => {
   console.log('context user', context.user.id);
 
   const fetchApplications = async () => {
-    const resp = await fetch(`/user/2/application`, {
+    const resp = await fetch(`/user/${context.user.id}/application`, {
       method: "GET",
       headers: { "content-type": "application/JSON" },
     });
@@ -34,7 +37,7 @@ const Dashboard = () => {
 
   //Delete application from the DB
   const removeApplications = (id) => {
-    fetch(`/user/2/application/${id}`, {
+    fetch(`/user/${context.user.id}/application/${id}`, {
       method: "DELETE",
       headers: {
         "content-type": "application/JSON",
@@ -48,29 +51,34 @@ const Dashboard = () => {
   };
 
   //this is the header
-  //Operation is for Edit and Delete functionality
+  //Modify is for Edit, Delete, Add step functionality
   const renderHeader = () => {
     let headerElement = [
       "id",
-      "Job title",
-      "company",
-      "found by",
-      "How applied",
-      "date applied",
+      "Company",
+      "Title",
       "Location",
-      "notes",
-      "App status",
-      "operation",
+      "Found on",
+      "Applied via",
+      "Date applied",
+      "Notes",
+      "Status",
+      "Modify",
     ];
 
     //now we will map over these values and output as th
     return headerElement.map((key, index) => {
-      return <th key={index}>{key.toUpperCase()}</th>;
+      // if => add classname to collapse columns
+      return <th key={index}>{key}</th>;
     });
   };
 
-  const changeRoute = () => {
-    let path = "/Step";
+  const changeRoute = (e) => {
+    console.log('id', e.target.id);
+    const id = e.target.id;
+    // save app id somehow
+    // application/2/step
+    let path = `/application/${id}/step`;
     history.push(path);
   };
 
@@ -96,13 +104,13 @@ const Dashboard = () => {
           return (
             <tr key={id}>
               <td>{id}</td>
-              <td>{job_title}</td>
               <td>{company}</td>
-              <td>{found_by}</td>
-              <td>{how_applied}</td>
-              <td>{date_applied}</td>
+              <td>{job_title}</td>
               <td>{location}</td>
-              <td>{notes}</td>
+              <td className="low-priority-col">{found_by}</td>
+              <td className="low-priority-col">{how_applied}</td>
+              <td className="low-priority-col">{date_applied}</td>
+              <td className="low-priority-col">{notes}</td>
               <td>{app_status}</td>
               <td className="operation">
                 <button
@@ -117,9 +125,19 @@ const Dashboard = () => {
                 >
                   Delete
                 </button>
-                <button src="step" className="editStep" onClick={changeRoute}>
+                <Link
+                  to={{
+                    pathname: `/application/${id}/step`,
+                    state: { appId: id }
+                  }}
+                >
+                  <button src="step" className="editStep" 
+                    // onClick={changeRoute} id={id}
+                    >
                   Add step
                 </button>
+                </Link>;
+                
               </td>
             </tr>
           );
@@ -130,15 +148,21 @@ const Dashboard = () => {
 
   return (
     <>
-      <h1 id="title">Applications Dashboard</h1>
-      <table id="tracker">
+      <h2 id="title">Applications Dashboard</h2>
+      <div className="tableContainer"> 
+
+      {context.user.id ? 
+      (<table id="tracker">
         <thead>
           <tr>{renderHeader()}</tr>
         </thead>
         <tbody>{renderBody()}</tbody>
-      </table>
+      </table>) : (
+          <p>Login first <Link to="/">here</Link></p>
+      )}
+      </div>  
 
-      <button onClick={() => history.goBack()}>Back</button>
+      <button onClick={() => history.goBack()}>Sign out</button>
 
       {showModal.action ? (
         <Modal
