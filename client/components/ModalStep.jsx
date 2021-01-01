@@ -1,52 +1,52 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React from 'react';
+import { useState, useEffect } from 'react';
 
 const modalTitle = {
-  add: "Add new step",
-  edit: "Edit step",
+  add: 'Add new step',
+  edit: 'Edit step',
 };
 
-const ModalStep = ({ setModalStep, action, currentStep }) => {
+const ModalStep = ({ setShowModalStep, action, currentStep, app_id }) => {
   const [date, setDate] = useState(new Date());
-  const [step_type, setStepType] = useState(currentStep.step_type || "");
+  const [step_type, setStepType] = useState(currentStep.step_type || '');
   const [contact_name, setContactName] = useState(
-    currentStep.contact_name || ""
+    currentStep.contact_name || ''
   );
   const [contact_role, setContractRole] = useState(
-    currentStep.contact_role || ""
+    currentStep.contact_role || ''
   );
-  const [contact, setContact] = useState(currentStep.contact || "");
-  const [notes, setNote] = useState(currentStep.notes || "");
+  const [contact, setContact] = useState(currentStep.contact || '');
+  const [notes, setNote] = useState(currentStep.notes || '');
 
-  const stepID = 2;
+  const fakeUID = 2;
 
   const addStep = (body) => {
-    fetch(`/user/${fakeUID}/step`, {
-      method: "POST",
+    fetch(`/user/${fakeUID}/application/${app_id}/step`, {
+      method: 'POST',
       headers: {
-        "Content-Type": "Application/JSON",
+        'Content-Type': 'Application/JSON',
       },
       body: JSON.stringify(body),
     })
       .then((data) => {
         data.json();
-        console.log("new step added");
-        setModalStep({ action: null, id: null });
+        console.log('new step added');
+        setShowModalStep({ action: null, id: null });
       })
-      .catch((err) => console.log("addStep ERROR: ", err));
+      .catch((err) => console.log('addStep ERROR: ', err));
   };
 
   const editStep = (body) => {
-    fetch(`/user/${fakeUID}/step/${currentStep.id}`, {
-      method: "PUT",
+    fetch(`/user/${fakeUID}/application/${app_id}/step/${step_id}`, {
+      method: 'PUT',
       headers: {
-        "content-type": "application/JSON",
+        'content-type': 'application/JSON',
       },
       body: JSON.stringify(body),
     }).then((data) => {
       data.json();
       console.log(`step updated`);
-      setModalStep({ action: null, id: null });
+      setShowModalStep({ action: null, id: null });
     });
   };
 
@@ -54,7 +54,6 @@ const ModalStep = ({ setModalStep, action, currentStep }) => {
     e.preventDefault();
 
     const body = {
-      id,
       app_id,
       date,
       step_type,
@@ -64,7 +63,7 @@ const ModalStep = ({ setModalStep, action, currentStep }) => {
       notes,
     };
 
-    if (action === "edit") {
+    if (action === 'edit') {
       editStep(body);
     } else {
       addStep(body);
@@ -143,13 +142,13 @@ const ModalStep = ({ setModalStep, action, currentStep }) => {
         <div className="modalButtonWrapper">
           <button
             className="modalButton"
-            onClick={() => setModalStep({ action: null, id: null })}
+            onClick={() => setShowModalStep({ action: null, id: null })}
           >
             Cancel
           </button>
 
           <button type="submit" className="modalButton" onClick={handleSubmit}>
-            Save{" "}
+            Save
           </button>
         </div>
       </form>
