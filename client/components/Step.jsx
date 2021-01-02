@@ -58,14 +58,15 @@ const Steps = () => {
   //Operation is for Edit and Delete functionality
   const renderHeader = () => {
     let headerElement = [
-      'id',
-      'app id',
+      // 'id',
+      // 'app id',
       'date',
       'step_type',
       'contact_name',
       'contact_role',
       'contact',
       'notes',
+      'modify',
     ];
 
     //now we will map over these values and output as th
@@ -93,9 +94,7 @@ const Steps = () => {
         ) => {
           return (
             <tr key={id}>
-              {/* <td>{id}</td>
-              <td>{app_id}</td> */}
-              <td>{date}</td>
+              <td>{new Date(date).toLocaleDateString('en-US')}</td>
               <td>{step_type}</td>
               <td>{contact_name}</td>
               <td>{contact_role}</td>
@@ -105,7 +104,7 @@ const Steps = () => {
                 <button
                   className="deleteButton"
                   onClick={() =>
-                    setShowModalStep({ action: 'edit', app_id: index })
+                    setShowModalStep({ action: 'edit', id: index })
                   }
                 >
                   Edit

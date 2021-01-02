@@ -15,7 +15,7 @@ const ModalStep = ({
   appId,
   setUpdateState,
 }) => {
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(currentStep.date || '');
   const [step_type, setStepType] = useState(currentStep.step_type || '');
   const [contact_name, setContactName] = useState(
     currentStep.contact_name || ''
@@ -96,13 +96,13 @@ const ModalStep = ({
             <input
               type="date"
               id="date"
-              value={date}
+              value={date.slice(0, 10)}
               onChange={(e) => setDate(e.target.value)}
               required
             />
           </label>
           <label>
-            Company
+            Step Type
             <input
               type="text"
               placeholder="step_type"
