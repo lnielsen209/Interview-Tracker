@@ -1,10 +1,8 @@
-
-import React from "react";
-import { useState, useEffect, useContext } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
-import ModalStep from "./ModalStep.jsx";
+import React from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
+import ModalStep from './ModalStep.jsx';
 import { UserContext } from '../App.jsx';
-
 
 const Steps = () => {
   const history = useHistory();
@@ -24,12 +22,13 @@ const Steps = () => {
   const context = useContext(UserContext);
 
   const fetchStep = async () => {
-
-    const resp = await fetch(`/user/${context.user.id}/application/${state.appId}/step`, {
-      method: "GET",
-      headers: { "content-type": "application/JSON" },
-
-    });
+    const resp = await fetch(
+      `/user/${context.user.id}/application/${state.appId}/step`,
+      {
+        method: 'GET',
+        headers: { 'content-type': 'application/JSON' },
+      }
+    );
     const data = await resp.json();
     console.log(data);
     setStepTracker(data);
@@ -43,9 +42,9 @@ const Steps = () => {
 
   //Delete step from the DB
 
-  const removeStep = (app_id) => {
-    fetch(`/user/${context.user.id}/application/${app_id}/step`, {
-      method: "DELETE",
+  const removeStep = (id, app_id) => {
+    fetch(`/user/${context.user.id}/application/${app_id}/step/${id}`, {
+      method: 'DELETE',
 
       headers: {
         'content-type': 'application/JSON',
@@ -59,7 +58,6 @@ const Steps = () => {
   //Operation is for Edit and Delete functionality
   const renderHeader = () => {
     let headerElement = [
-
       'id',
       'app id',
       'date',
@@ -68,7 +66,6 @@ const Steps = () => {
       'contact_role',
       'contact',
       'notes',
-
     ];
 
     //now we will map over these values and output as th
@@ -83,8 +80,8 @@ const Steps = () => {
       stepTracker.map(
         (
           {
-            // id,
-            // app_id,
+            id,
+            app_id,
             date,
             step_type,
             contact_name,
@@ -113,7 +110,10 @@ const Steps = () => {
                 >
                   Edit
                 </button>
-                <button className="button" onClick={() => removeStep(id)}>
+                <button
+                  className="button"
+                  onClick={() => removeStep(id, app_id)}
+                >
                   Delete
                 </button>
               </td>
@@ -137,17 +137,18 @@ const Steps = () => {
       {showModalStep.action ? (
         <ModalStep
           //setShowModalStep={setShowModalStep}
-          setModalStep={setShowModalStep}
+          setShowModalStep={setShowModalStep}
           action={showModalStep.action}
           currentStep={
             showModalStep.action === 'edit' ? stepTracker[showModalStep.id] : {}
           }
-
           appId={state.appId}
+          setUpdateState={setUpdateState}
         />
       ) : (
-        <button onClick={() => setShowModalStep({ action: "add", id: state.appId })}>
-
+        <button
+          onClick={() => setShowModalStep({ action: 'add', id: state.appId })}
+        >
           Add new step
         </button>
       )}
