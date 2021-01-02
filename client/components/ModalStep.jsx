@@ -74,6 +74,7 @@ const ModalStep = ({ setModalStep, action, currentStep, appId }) => {
 
   return (
     <div id="div3" className="modalWrapper">
+      <div className="modalBackground"> 
       <h2>{modalTitle[action]}</h2>
       <form id="list" className="modalForm">
         <label>
@@ -154,6 +155,7 @@ const ModalStep = ({ setModalStep, action, currentStep, appId }) => {
           </button>
         </div>
       </form>
+    </div>
     </div>
   );
 };

@@ -92,7 +92,7 @@ console.log('currentapp', currentApp)
             <label>Job Title
               <input
                 type="text"
-                placeholder="Job Title"
+                // placeholder="Job Title"
                 id="job_title"
                 value={job_title}
                 onChange={(e) => setJobTitle(e.target.value)}
@@ -102,7 +102,7 @@ console.log('currentapp', currentApp)
             <label>Company
               <input
                 type="text"
-                placeholder="company"
+                // placeholder="company"
                 id="company"
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
@@ -112,7 +112,7 @@ console.log('currentapp', currentApp)
               <label>How I applied
                 <input
                 type="text"
-                placeholder="Applied via (e.g. email, company website, linkedIn,...)"
+                placeholder="e.g. email, company website, Glassdoor,..."
                 id="how_applied"
                 value={how_applied}
                 onChange={(e) => setHowApplied(e.target.value)}
@@ -122,7 +122,7 @@ console.log('currentapp', currentApp)
             <label>Date applied
               <input
                 type="date"
-                placeholder="Date applied"
+                // placeholder="Date applied"
                 id="date_applied"
                 value={date_applied}
                 onChange={(e) => setDateApplied(e.target.value)}
@@ -132,17 +132,17 @@ console.log('currentapp', currentApp)
               <label>Location
                 <input
                 type="text"
-                placeholder="Location"
+                // placeholder="Location"
                 id="location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 required
               />
                 </label>
-            <label>Found on
+            <label>Found by
               <input
                 type="text"
-                placeholder="Found on (e.g. Google, linkedIn, GlassDoor,...)"
+                placeholder="e.g. recruiter/agency, linkedIn, Google,..."
                 id="found_by"
                 value={found_by}
                 onChange={(e) => setFoundBy(e.target.value)}
@@ -152,7 +152,7 @@ console.log('currentapp', currentApp)
             <label>Notes
               <input
                 type="text"
-                placeholder="Notes"
+                // placeholder="Notes"
                 id="notes"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
@@ -162,7 +162,7 @@ console.log('currentapp', currentApp)
             <label>App Status
               <input
                 type="text"
-                placeholder="Status"
+                placeholder="change to radio selection"
                 id="app_status"
                 value={app_status}
                 onChange={(e) => setAppStatus(e.target.value)}

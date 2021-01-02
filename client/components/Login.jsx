@@ -42,15 +42,19 @@ const Login = () => {
 
   return (
     <div className="outer-wrapper">
+            <div className="recent-posts">
+        {/* <h2>Recent Interviews</h2> */}
+        <p align="left">Get interview insights while you manage <br />every step in your job search, from application to offer.  </p>
+      </div>
       <div className="login-wrapper">
-        <h1>Please Log In</h1>
+        <h1>Log in:</h1>
         <form onSubmit={handleSubmit} method="POST">
           <label>
             <p>Email</p>
             <input
               value={username}
               type="email"
-              placeholder="Email"
+              // placeholder="Email"
               onChange={(e) => setUserName(e.target.value)}
               required
             />
@@ -60,23 +64,21 @@ const Login = () => {
             <input
               password={password}
               type="password"
-              placeholder="password"
+              // placeholder="password"
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </label>
-          <div>
-            <button type="submit">Log in</button>
-          </div>
-          <div>
+          <div className="loginButtonWrapper">
+            <button className="loginButton" type="submit">Log in</button>
+          {/* </div> */}
+          <p>or</p>
+          {/* <div> */}
             <Link to="/signup">
-              <button src="/Signup">Sign up now!!!</button>
+              <button className="signupButton" src="/Signup">Sign up</button>
             </Link>
           </div>
         </form>
-      </div>
-      <div className="recent-posts">
-        <h2>Recent Interviews</h2>
       </div>
     </div>
   );

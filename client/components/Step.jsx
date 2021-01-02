@@ -50,20 +50,20 @@ const Steps = () => {
   //Operation is for Edit and Delete functionality
   const renderHeader = () => {
     let headerElement = [
-      "id",
-      "app id",
-      "date",
-      "step_type",
-      "contact_name",
-      "contact_role",
-      "contact",
-      "notes",
-      "operation",
+      // "id",
+      // "app id",
+      "Date",
+      "Type",
+      "Contact Name",
+      "Contact Role",
+      "Contact Info",
+      "Notes",
+      "Modify",
     ];
 
     //now we will map over these values and output as th
     return headerElement.map((key, index) => {
-      return <th key={index}>{key.toUpperCase()}</th>;
+      return <th key={index}>{key}</th>;
     });
   };
 
@@ -75,8 +75,8 @@ const Steps = () => {
       stepTracker.map(
         (
           {
-            id,
-            app_id,
+            // id,
+            // app_id,
             date,
             step_type,
             contact_name,
@@ -89,8 +89,8 @@ const Steps = () => {
         ) => {
           return (
             <tr key={id}>
-              <td>{id}</td>
-              <td>{app_id}</td>
+              {/* <td>{id}</td>
+              <td>{app_id}</td> */}
               <td>{date}</td>
               <td>{step_type}</td>
               <td>{contact_name}</td>

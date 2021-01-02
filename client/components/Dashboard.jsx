@@ -5,16 +5,10 @@ import Modal from "./Modal.jsx";
 import Step from "./Step.jsx";
 import { UserContext } from '../App.jsx';
 
-
 const Dashboard = () => {
   let history = useHistory();
-
-
-
   const [tracker, setTracker] = useState([]);
-
   const [showModal, setShowModal] = useState({ action: null, id: null }); // none / edit /add
-
   const [updateState, setUpdateState] = useState(true);
 
   const context = useContext(UserContext);
@@ -54,11 +48,11 @@ const Dashboard = () => {
   //Modify is for Edit, Delete, Add step functionality
   const renderHeader = () => {
     let headerElement = [
-      "id",
+      // "id",
       "Company",
       "Title",
       "Location",
-      "Found on",
+      "Found by",
       "Applied via",
       "Date applied",
       "Notes",
@@ -68,21 +62,22 @@ const Dashboard = () => {
 
     //now we will map over these values and output as th
     return headerElement.map((key, index) => {
-      // if => add classname to collapse columns
-      return <th key={index}>{key}</th>;
+      if(key === "Found by" || key ==="Applied via" || key==="Date applied" || key==="Notes") {
+        return <th key={index} className="low-priority-col">{key}</th>
+      }
+      else return <th key={index}>{key}</th>;
     });
   };
 
   const changeRoute = (e) => {
     console.log('id', e.target.id);
     const id = e.target.id;
-    // save app id somehow
-    // application/2/step
     let path = `/application/${id}/step`;
     history.push(path);
   };
 
   const renderBody = () => {
+
     return (
       tracker &&
       tracker.map(
@@ -103,14 +98,14 @@ const Dashboard = () => {
         ) => {
           return (
             <tr key={id}>
-              <td>{id}</td>
+              <td id="hide-ID-col">{id}</td>
               <td>{company}</td>
               <td>{job_title}</td>
               <td>{location}</td>
               <td className="low-priority-col">{found_by}</td>
               <td className="low-priority-col">{how_applied}</td>
-              <td className="low-priority-col">{date_applied}</td>
-              <td className="low-priority-col">{notes}</td>
+              <td className="low-priority-col" id="date-column">{date_applied}</td>
+              <td className="low-priority-col" id="notes-column">{notes}</td>
               <td>{app_status}</td>
               <td className="operation">
                 <button
@@ -136,7 +131,7 @@ const Dashboard = () => {
                     >
                   Add step
                 </button>
-                </Link>;
+                </Link>
                 
               </td>
             </tr>
@@ -152,17 +147,26 @@ const Dashboard = () => {
       <div className="tableContainer"> 
 
       {context.user.id ? 
-      (<table id="tracker">
+      (<div>
+      <table id="tracker">
         <thead>
           <tr>{renderHeader()}</tr>
         </thead>
         <tbody>{renderBody()}</tbody>
-      </table>) : (
+      </table>
+            <button onClick={() => history.goBack()}>Sign out</button>
+
+            <button onClick={() => setShowModal({ action: "add", id: null })}>
+                Add new application
+              </button>
+              </div>
+      ) : (
           <p>Login first <Link to="/">here</Link></p>
       )}
       </div>  
 
-      <button onClick={() => history.goBack()}>Sign out</button>
+        
+
 
       {showModal.action ? (
         <Modal
@@ -172,9 +176,7 @@ const Dashboard = () => {
           currentApp={showModal.action === "edit" ? tracker[showModal.id] : {}}
         />
       ) : (
-        <button onClick={() => setShowModal({ action: "add", id: null })}>
-          Add new application
-        </button>
+        <p></p>
       )}
     </>
   );
