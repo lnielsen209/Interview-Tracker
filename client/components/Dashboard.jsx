@@ -5,20 +5,17 @@ import Modal from "./Modal.jsx";
 import Step from "./Step.jsx";
 import { UserContext } from '../App.jsx';
 
-
 const Dashboard = () => {
   let history = useHistory();
   const [tracker, setTracker] = useState([]);
-
   const [showModal, setShowModal] = useState({ action: null, id: null }); // none / edit /add
-
   const [updateState, setUpdateState] = useState(true);
 
   const context = useContext(UserContext);
   console.log('context user', context.user.id);
 
   const fetchApplications = async () => {
-    const resp = await fetch(`/user/2/application`, {
+    const resp = await fetch(`/user/${context.user.id}/application`, {
       method: "GET",
       headers: { "content-type": "application/JSON" },
     });
@@ -34,7 +31,7 @@ const Dashboard = () => {
 
   //Delete application from the DB
   const removeApplications = (id) => {
-    fetch(`/user/2/application/${id}`, {
+    fetch(`/user/${context.user.id}/application/${id}`, {
       method: "DELETE",
       headers: {
         "content-type": "application/JSON",
@@ -48,33 +45,39 @@ const Dashboard = () => {
   };
 
   //this is the header
-  //Operation is for Edit and Delete functionality
+  //Modify is for Edit, Delete, Add step functionality
   const renderHeader = () => {
     let headerElement = [
-      "id",
-      "Job title",
-      "company",
-      "found by",
-      "How applied",
-      "date applied",
+      // "id",
+      "Company",
+      "Title",
       "Location",
-      "notes",
-      "App status",
-      "operation",
+      "Found by",
+      "Applied via",
+      "Date applied",
+      "Notes",
+      "Status",
+      "Modify",
     ];
 
     //now we will map over these values and output as th
     return headerElement.map((key, index) => {
-      return <th key={index}>{key.toUpperCase()}</th>;
+      if(key === "Found by" || key ==="Applied via" || key==="Date applied" || key==="Notes") {
+        return <th key={index} className="low-priority-col">{key}</th>
+      }
+      else return <th key={index}>{key}</th>;
     });
   };
 
-  const changeRoute = () => {
-    let path = "/Step";
+  const changeRoute = (e) => {
+    console.log('id', e.target.id);
+    const id = e.target.id;
+    let path = `/application/${id}/step`;
     history.push(path);
   };
 
   const renderBody = () => {
+
     return (
       tracker &&
       tracker.map(
@@ -95,14 +98,14 @@ const Dashboard = () => {
         ) => {
           return (
             <tr key={id}>
-              <td>{id}</td>
-              <td>{job_title}</td>
+              <td id="hide-ID-col">{id}</td>
               <td>{company}</td>
-              <td>{found_by}</td>
-              <td>{how_applied}</td>
-              <td>{date_applied}</td>
+              <td>{job_title}</td>
               <td>{location}</td>
-              <td>{notes}</td>
+              <td className="low-priority-col">{found_by}</td>
+              <td className="low-priority-col">{how_applied}</td>
+              <td className="low-priority-col" id="date-column">{date_applied}</td>
+              <td className="low-priority-col" id="notes-column">{notes}</td>
               <td>{app_status}</td>
               <td className="operation">
                 <button
@@ -117,9 +120,19 @@ const Dashboard = () => {
                 >
                   Delete
                 </button>
-                <button src="step" className="editStep" onClick={changeRoute}>
+                <Link
+                  to={{
+                    pathname: `/application/${id}/step`,
+                    state: { appId: id }
+                  }}
+                >
+                  <button src="step" className="editStep" 
+                    // onClick={changeRoute} id={id}
+                    >
                   Add step
                 </button>
+                </Link>
+                
               </td>
             </tr>
           );
@@ -130,15 +143,30 @@ const Dashboard = () => {
 
   return (
     <>
-      <h1 id="title">Applications Dashboard</h1>
+      <h2 id="title">Applications Dashboard</h2>
+      <div className="tableContainer"> 
+
+      {context.user.id ? 
+      (<div>
       <table id="tracker">
         <thead>
           <tr>{renderHeader()}</tr>
         </thead>
         <tbody>{renderBody()}</tbody>
       </table>
+            <button onClick={() => history.goBack()}>Sign out</button>
 
-      <button onClick={() => history.goBack()}>Back</button>
+            <button onClick={() => setShowModal({ action: "add", id: null })}>
+                Add new application
+              </button>
+              </div>
+      ) : (
+          <p>Login first <Link to="/">here</Link></p>
+      )}
+      </div>  
+
+        
+
 
       {showModal.action ? (
         <Modal
@@ -148,9 +176,7 @@ const Dashboard = () => {
           currentApp={showModal.action === "edit" ? tracker[showModal.id] : {}}
         />
       ) : (
-        <button onClick={() => setShowModal({ action: "add", id: null })}>
-          Add new application
-        </button>
+        <p></p>
       )}
     </>
   );

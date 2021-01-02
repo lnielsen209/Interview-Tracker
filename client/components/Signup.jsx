@@ -53,7 +53,7 @@ const Signup = () => {
 
   return (
     <div id="wrapper">
-      <div id="div2">
+      <div id="sign-up" className="login-wrapper">
         <form onSubmit={handleSubmit} id="list">
           <h1>Create an Account</h1>
           First Name
@@ -91,29 +91,29 @@ const Signup = () => {
               className="inputSignUp"
             />
           </li>
-          Enter Password
+           Password
           <li>
             <input
               type="password"
-              placeholder="Six Characters"
+              // placeholder="Six Characters"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               className="inputSignUp"
             />
           </li>
-          Re-Enter password
+          Re-enter password
           <li>
             <input
               type="password"
-              placeholder="Confirm Password"
+              // placeholder="Confirm Password"
               value={password2}
               onChange={(e) => setPassword2(e.target.value)}
               required
               className="inputSignUp"
             />
           </li>
-          Enter Date of Birth
+          Date of Birth
           <li>
             <input
               type="date"
@@ -122,7 +122,7 @@ const Signup = () => {
               className="inputSignUp"
             />
           </li>
-          Salary
+          Salary ($ USD)
           <li>
             <input
               type="number"
@@ -132,12 +132,12 @@ const Signup = () => {
               className="inputSignUp"
             />
           </li>
-          <li>
+          {/* <li> */}
             <input type="submit" value="Create Account" />
-          </li>
-          <li>
+          {/* </li> */}
+          {/* <li> */}
             <button onClick={() => history.goBack()}>Back</button>
-          </li>
+          {/* </li> */}
         </form>
       </div>
     </div>

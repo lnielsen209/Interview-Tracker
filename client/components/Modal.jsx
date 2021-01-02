@@ -1,5 +1,6 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from '../App.jsx';
 
 const modalTitle = {
   'add': 'Add new application',
@@ -18,11 +19,13 @@ const Modal = ({setShowModal, action, currentApp, setUpdateState}) => {
   const [notes, setNotes] = useState(currentApp.notes || "");
   const [app_status, setAppStatus] = useState(currentApp.app_status || "");
 
-  const fakeUID = 2;
+//   const fakeUID = 2;
+
+  const context = useContext(UserContext);
 
   const addApplication = (body) => {
 
-      fetch(`/user/${fakeUID}/application`, {
+      fetch(`/user/${context.user.id}/application`, {
         method: "POST",
         headers: {
           "Content-Type": "Application/JSON",
@@ -41,7 +44,7 @@ const Modal = ({setShowModal, action, currentApp, setUpdateState}) => {
 
   const editApplication = (body) => {
     console.log('call edit app');
-    fetch(`/user/${fakeUID}/application/${currentApp.id}`, {
+    fetch(`/user/${context.user.id}/application/${currentApp.id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/JSON",
@@ -89,7 +92,7 @@ console.log('currentapp', currentApp)
             <label>Job Title
               <input
                 type="text"
-                placeholder="Job Title"
+                // placeholder="Job Title"
                 id="job_title"
                 value={job_title}
                 onChange={(e) => setJobTitle(e.target.value)}
@@ -99,7 +102,7 @@ console.log('currentapp', currentApp)
             <label>Company
               <input
                 type="text"
-                placeholder="company"
+                // placeholder="company"
                 id="company"
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
@@ -109,7 +112,7 @@ console.log('currentapp', currentApp)
               <label>How I applied
                 <input
                 type="text"
-                placeholder="how_applied"
+                placeholder="e.g. email, company website, Glassdoor,..."
                 id="how_applied"
                 value={how_applied}
                 onChange={(e) => setHowApplied(e.target.value)}
@@ -118,8 +121,8 @@ console.log('currentapp', currentApp)
             </label>
             <label>Date applied
               <input
-                type="text"
-                placeholder="date_applied"
+                type="date"
+                // placeholder="Date applied"
                 id="date_applied"
                 value={date_applied}
                 onChange={(e) => setDateApplied(e.target.value)}
@@ -129,17 +132,17 @@ console.log('currentapp', currentApp)
               <label>Location
                 <input
                 type="text"
-                placeholder="location"
+                // placeholder="Location"
                 id="location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 required
               />
                 </label>
-            <label>Found on
+            <label>Found by
               <input
                 type="text"
-                placeholder="found_by"
+                placeholder="e.g. recruiter/agency, linkedIn, Google,..."
                 id="found_by"
                 value={found_by}
                 onChange={(e) => setFoundBy(e.target.value)}
@@ -149,7 +152,7 @@ console.log('currentapp', currentApp)
             <label>Notes
               <input
                 type="text"
-                placeholder="notes"
+                // placeholder="Notes"
                 id="notes"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
@@ -159,7 +162,7 @@ console.log('currentapp', currentApp)
             <label>App Status
               <input
                 type="text"
-                placeholder="app_status"
+                placeholder="change to radio selection"
                 id="app_status"
                 value={app_status}
                 onChange={(e) => setAppStatus(e.target.value)}

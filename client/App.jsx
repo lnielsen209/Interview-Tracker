@@ -36,7 +36,7 @@ const App = () => {
           <Route exact path="/" component={Login} />
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/signup" component={Signup} />
-          <Route path="/step" component={Step} />
+          <Route path="/application/:id/step" component={Step} />
         </Switch>
       </BrowserRouter>
     </UserProvider>
