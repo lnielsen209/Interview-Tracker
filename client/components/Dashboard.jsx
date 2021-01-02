@@ -1,8 +1,8 @@
-import React from "react";
-import { useState, useEffect, useContext } from "react";
-import { Link, useHistory } from "react-router-dom";
-import Modal from "./Modal.jsx";
-import Step from "./Step.jsx";
+import React from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import Modal from './Modal.jsx';
+import Step from './Step.jsx';
 import { UserContext } from '../App.jsx';
 
 const Dashboard = () => {
@@ -15,9 +15,11 @@ const Dashboard = () => {
   console.log('context user', context.user.id);
 
   const fetchApplications = async () => {
+
     const resp = await fetch(`/user/${context.user.id}/application`, {
       method: "GET",
       headers: { "content-type": "application/JSON" },
+
     });
     const data = await resp.json();
     setTracker(data);
@@ -31,10 +33,12 @@ const Dashboard = () => {
 
   //Delete application from the DB
   const removeApplications = (id) => {
+
     fetch(`/user/${context.user.id}/application/${id}`, {
       method: "DELETE",
+
       headers: {
-        "content-type": "application/JSON",
+        'content-type': 'application/JSON',
       },
     }).then((res) => {
       setUpdateState(true);
@@ -48,6 +52,7 @@ const Dashboard = () => {
   //Modify is for Edit, Delete, Add step functionality
   const renderHeader = () => {
     let headerElement = [
+
       // "id",
       "Company",
       "Title",
@@ -58,6 +63,7 @@ const Dashboard = () => {
       "Notes",
       "Status",
       "Modify",
+
     ];
 
     //now we will map over these values and output as th
@@ -69,10 +75,12 @@ const Dashboard = () => {
     });
   };
 
+
   const changeRoute = (e) => {
-    console.log('id', e.target.id);
+    
     const id = e.target.id;
     let path = `/application/${id}/step`;
+
     history.push(path);
   };
 
@@ -110,7 +118,7 @@ const Dashboard = () => {
               <td className="operation">
                 <button
                   className="deleteButton"
-                  onClick={() => setShowModal({ action: "edit", id: index })}
+                  onClick={() => setShowModal({ action: 'edit', id: index })}
                 >
                   Edit
                 </button>
@@ -120,6 +128,7 @@ const Dashboard = () => {
                 >
                   Delete
                 </button>
+
                 <Link
                   to={{
                     pathname: `/application/${id}/step`,
@@ -129,6 +138,7 @@ const Dashboard = () => {
                   <button src="step" className="editStep" 
                     // onClick={changeRoute} id={id}
                     >
+
                   Add step
                 </button>
                 </Link>
@@ -173,10 +183,12 @@ const Dashboard = () => {
           setShowModal={setShowModal}
           setUpdateState={setUpdateState}
           action={showModal.action}
-          currentApp={showModal.action === "edit" ? tracker[showModal.id] : {}}
+          currentApp={showModal.action === 'edit' ? tracker[showModal.id] : {}}
         />
       ) : (
+
         <p></p>
+
       )}
     </>
   );

@@ -1,8 +1,10 @@
+
 import React from "react";
 import { useState, useEffect, useContext } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import ModalStep from "./ModalStep.jsx";
 import { UserContext } from '../App.jsx';
+
 
 const Steps = () => {
   const history = useHistory();
@@ -15,16 +17,21 @@ const Steps = () => {
     id: null,
   }); // none / edit /add
 
+  const { app_id } = useParams();
+
   const [updateState, setUpdateState] = useState(true);
 
   const context = useContext(UserContext);
 
   const fetchStep = async () => {
+
     const resp = await fetch(`/user/${context.user.id}/application/${state.appId}/step`, {
       method: "GET",
       headers: { "content-type": "application/JSON" },
+
     });
     const data = await resp.json();
+    console.log(data);
     setStepTracker(data);
     setUpdateState(false);
   };
@@ -35,11 +42,13 @@ const Steps = () => {
   }, [updateState]);
 
   //Delete step from the DB
+
   const removeStep = (app_id) => {
     fetch(`/user/${context.user.id}/application/${app_id}/step`, {
       method: "DELETE",
+
       headers: {
-        "content-type": "application/JSON",
+        'content-type': 'application/JSON',
       },
     }).then((res) => {
       setUpdateState(true);
@@ -50,15 +59,16 @@ const Steps = () => {
   //Operation is for Edit and Delete functionality
   const renderHeader = () => {
     let headerElement = [
-      // "id",
-      // "app id",
-      "Date",
-      "Type",
-      "Contact Name",
-      "Contact Role",
-      "Contact Info",
-      "Notes",
-      "Modify",
+
+      'id',
+      'app id',
+      'date',
+      'step_type',
+      'contact_name',
+      'contact_role',
+      'contact',
+      'notes',
+
     ];
 
     //now we will map over these values and output as th
@@ -66,8 +76,6 @@ const Steps = () => {
       return <th key={index}>{key}</th>;
     });
   };
-
-
 
   const renderBody = () => {
     return (
@@ -83,7 +91,6 @@ const Steps = () => {
             contact_role,
             contact,
             notes,
-            operation,
           },
           index
         ) => {
@@ -97,12 +104,11 @@ const Steps = () => {
               <td>{contact_role}</td>
               <td>{contact}</td>
               <td>{notes}</td>
-              <td>{app_status}</td>
               <td className="operation">
                 <button
                   className="deleteButton"
                   onClick={() =>
-                    setShowModalStep({ action: "edit", app_id: index })
+                    setShowModalStep({ action: 'edit', app_id: index })
                   }
                 >
                   Edit
@@ -134,15 +140,16 @@ const Steps = () => {
           setModalStep={setShowModalStep}
           action={showModalStep.action}
           currentStep={
-            showModalStep.action === "edit" ? stepTracker[showModalStep.id] : {}
+            showModalStep.action === 'edit' ? stepTracker[showModalStep.id] : {}
           }
+
           appId={state.appId}
         />
       ) : (
         <button onClick={() => setShowModalStep({ action: "add", id: state.appId })}>
+
           Add new step
         </button>
-        
       )}
       <button onClick={() => history.goBack()}>Back</button>
     </>
