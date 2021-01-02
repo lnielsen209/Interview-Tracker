@@ -1,12 +1,18 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+
+import React from "react";
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from '../App.jsx';
+import { useLocation } from "react-router-dom";
+
 
 const modalTitle = {
   add: 'Add new step',
   edit: 'Edit step',
 };
 
-const ModalStep = ({ setShowModalStep, action, currentStep, app_id }) => {
+
+const ModalStep = ({ setModalStep, action, currentStep, appId }) => {
+
   const [date, setDate] = useState(new Date());
   const [step_type, setStepType] = useState(currentStep.step_type || '');
   const [contact_name, setContactName] = useState(
@@ -18,11 +24,14 @@ const ModalStep = ({ setShowModalStep, action, currentStep, app_id }) => {
   const [contact, setContact] = useState(currentStep.contact || '');
   const [notes, setNote] = useState(currentStep.notes || '');
 
-  const fakeUID = 2;
+
+  const context = useContext(UserContext);
+  console.log('appID', appId) 
 
   const addStep = (body) => {
-    fetch(`/user/${fakeUID}/application/${app_id}/step`, {
-      method: 'POST',
+    fetch(`/user/${context.user.id}/application/${appId}/step`, {
+      method: "POST",
+
       headers: {
         'Content-Type': 'Application/JSON',
       },
@@ -37,8 +46,10 @@ const ModalStep = ({ setShowModalStep, action, currentStep, app_id }) => {
   };
 
   const editStep = (body) => {
-    fetch(`/user/${fakeUID}/application/${app_id}/step/${step_id}`, {
-      method: 'PUT',
+
+    fetch(`/user/${context.user.id}/application/${appId}/step/${currentStep.id}`, {
+      method: "PUT",
+
       headers: {
         'content-type': 'application/JSON',
       },
@@ -72,6 +83,7 @@ const ModalStep = ({ setShowModalStep, action, currentStep, app_id }) => {
 
   return (
     <div id="div3" className="modalWrapper">
+      <div className="modalBackground"> 
       <h2>{modalTitle[action]}</h2>
       <form id="list" className="modalForm">
         <label>
@@ -96,7 +108,7 @@ const ModalStep = ({ setShowModalStep, action, currentStep, app_id }) => {
           />
         </label>
         <label>
-          contact information
+          Contact Information
           <input
             type="text"
             placeholder="contact information"
@@ -107,7 +119,7 @@ const ModalStep = ({ setShowModalStep, action, currentStep, app_id }) => {
           />
         </label>
         <label>
-          contact role
+          Contact Role
           <input
             type="text"
             placeholder="contact role"
@@ -152,6 +164,7 @@ const ModalStep = ({ setShowModalStep, action, currentStep, app_id }) => {
           </button>
         </div>
       </form>
+    </div>
     </div>
   );
 };

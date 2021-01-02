@@ -1,10 +1,15 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { Link, useHistory, useParams } from 'react-router-dom';
-import ModalStep from './ModalStep.jsx';
+
+import React from "react";
+import { useState, useEffect, useContext } from "react";
+import { Link, useHistory, useLocation } from "react-router-dom";
+import ModalStep from "./ModalStep.jsx";
+import { UserContext } from '../App.jsx';
+
 
 const Steps = () => {
   const history = useHistory();
+  const { state } = useLocation();
+  console.log('state', state);
   const [stepTracker, setStepTracker] = useState([]);
 
   const [showModalStep, setShowModalStep] = useState({
@@ -16,10 +21,14 @@ const Steps = () => {
 
   const [updateState, setUpdateState] = useState(true);
 
+  const context = useContext(UserContext);
+
   const fetchStep = async () => {
-    const resp = await fetch(`/user/2/application/${app_id}/step`, {
-      method: 'GET',
-      headers: { 'content-type': 'application/JSON' },
+
+    const resp = await fetch(`/user/${context.user.id}/application/${state.appId}/step`, {
+      method: "GET",
+      headers: { "content-type": "application/JSON" },
+
     });
     const data = await resp.json();
     console.log(data);
@@ -33,9 +42,11 @@ const Steps = () => {
   }, [updateState]);
 
   //Delete step from the DB
-  const removeStep = (step_id) => {
-    fetch(`/user/2/application/${app_id}/step/${step_id}`, {
-      method: 'DELETE',
+
+  const removeStep = (app_id) => {
+    fetch(`/user/${context.user.id}/application/${app_id}/step`, {
+      method: "DELETE",
+
       headers: {
         'content-type': 'application/JSON',
       },
@@ -48,6 +59,7 @@ const Steps = () => {
   //Operation is for Edit and Delete functionality
   const renderHeader = () => {
     let headerElement = [
+
       'id',
       'app id',
       'date',
@@ -56,11 +68,12 @@ const Steps = () => {
       'contact_role',
       'contact',
       'notes',
+
     ];
 
     //now we will map over these values and output as th
     return headerElement.map((key, index) => {
-      return <th key={index}>{key.toUpperCase()}</th>;
+      return <th key={index}>{key}</th>;
     });
   };
 
@@ -70,8 +83,8 @@ const Steps = () => {
       stepTracker.map(
         (
           {
-            id,
-            app_id,
+            // id,
+            // app_id,
             date,
             step_type,
             contact_name,
@@ -83,8 +96,8 @@ const Steps = () => {
         ) => {
           return (
             <tr key={id}>
-              <td>{id}</td>
-              <td>{app_id}</td>
+              {/* <td>{id}</td>
+              <td>{app_id}</td> */}
               <td>{date}</td>
               <td>{step_type}</td>
               <td>{contact_name}</td>
@@ -123,15 +136,18 @@ const Steps = () => {
 
       {showModalStep.action ? (
         <ModalStep
-          setShowModalStep={setShowModalStep}
+          //setShowModalStep={setShowModalStep}
+          setModalStep={setShowModalStep}
           action={showModalStep.action}
           currentStep={
             showModalStep.action === 'edit' ? stepTracker[showModalStep.id] : {}
           }
-          app_id={app_id}
+
+          appId={state.appId}
         />
       ) : (
-        <button onClick={() => setShowModalStep({ action: 'add', id: null })}>
+        <button onClick={() => setShowModalStep({ action: "add", id: state.appId })}>
+
           Add new step
         </button>
       )}
